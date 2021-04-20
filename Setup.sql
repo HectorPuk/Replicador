@@ -1,4 +1,4 @@
---Test 33 
+--Test 33     
 
 SET SCHEMA "SBODEMOAR";
 DROP TABLE "SB1OBJECTLOG";

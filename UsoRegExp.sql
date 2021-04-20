@@ -1,5 +1,5 @@
 set schema SBODEMOAR;
---delete from "SB1OBJECTLOG";
+--  delete from "SB1OBJECTLOG";
 select * from "SB1OBJECTLOG" order by "Sequence" desc;
 select locate_regexpr('\t' in "ListOfKeyColsTabDel"), 
 replace(substr_regexpr('\w*\t' in "ListOfKeyColsTabDel" OCCURRENCE 1),'	',''), 
