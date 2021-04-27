@@ -1,0 +1,26 @@
+select "MiPYME-Comun", "TipoComprobante","Tipo","Moneda"   from 
+(
+select 'Factura' "TipoComprobante" from dummy 
+union all
+select 'NC Comun (Ej: Rotura en Trasporte)' from dummy 
+union all
+select 'NC Cancelacion' from dummy
+union all
+select 'NC Financiera (Ej: Descuento/Dif de Cambio)' from dummy
+union all
+select 'ND Comun (Ej: Cheque Rechazado)' from dummy
+union all
+select 'ND Financiera (Ej: Recargo / Dif de Cambio)' from dummy)
+,
+(select 'Electrónica MiPYME' "MiPYME-Comun" from dummy 
+union all
+select 'Electrónica Comun'  from dummy)
+,   
+(select 'Tipo A' "Tipo" from dummy 
+union all
+select 'Tipo B' from dummy)  
+,
+(select 'Pesos' "Moneda" from dummy 
+union all
+select 'Dolares' from dummy) order by  "MiPYME-Comun","TipoComprobante", "Tipo", "Moneda"
+;  
