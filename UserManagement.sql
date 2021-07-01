@@ -8,6 +8,12 @@ ALTER USER TEST01 RESET CONNECT ATTEMPTS; Reiniciar conteo intentos fallidos.
 ALTER USER TEST01 ACTIVATE USER NOW; Activar si fue desactivado.
 -- Sintaxis completa: https://help.sap.com/viewer/4fe29514fd584807ac9f2a04f6754767/1.0.12/en-US/20d3459f75191014a7bbeb670bad8850.html
 
+ALTER USER TEST01 DROP CONNECT ATTEMPTS
+
+--It does not reset the current count of invalid connect attempts and therefore does not allow the user to connect immediately.
+--This option can be used by the user themselves or by a user with the USER ADMIN privilege.
+--To view the count of invalid connection attempts that have occurred, see the INVALID_CONNECT_ATTEMPTS system view.
+
 GRANT USER ADMIN TO TEST01; 
 
 Syntax Completa: 	https://help.sap.com/viewer/4fe29514fd584807ac9f2a04f6754767/2.0.03/en-US/20f674e1751910148a8b990d33efbdc5.html
