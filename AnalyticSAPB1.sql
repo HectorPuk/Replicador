@@ -1,0 +1,5 @@
+--Switch Ownership fue el problema. No lo tengo del todo claro.
+--Cuando trate de importar el modelo a SAP B1 aparentemente lo creo con el usuario B1_44blablabla_RW pero no lo pudo activar, creo porque no existia la view a la que hacia referencia.
+--Luego SYSTEM no lo podia ver ni borrar.
+--Hay algo basntante misterioso que es la parte de administracion x WEB.
+--https://ip-10-0-30-52:4300/sap/hana/ide/editor/index.html
