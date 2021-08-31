@@ -8,6 +8,8 @@ ALTER USER TEST01 RESET CONNECT ATTEMPTS; Reiniciar conteo intentos fallidos.
 ALTER USER TEST01 ACTIVATE USER NOW; Activar si fue desactivado.
 -- Sintaxis completa: https://help.sap.com/viewer/4fe29514fd584807ac9f2a04f6754767/1.0.12/en-US/20d3459f75191014a7bbeb670bad8850.html
 
+ALTER USER SYSTEM2 DISABLE PASSWORD LIFETIME; -- Evitar que la password caduque.
+
 ALTER USER TEST01 DROP CONNECT ATTEMPTS
 
 --It does not reset the current count of invalid connect attempts and therefore does not allow the user to connect immediately.
