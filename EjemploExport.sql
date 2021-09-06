@@ -1,0 +1,1 @@
+EXPORT "SBODEMOAR"."*" AS BINARY INTO '/tmp/sbodemoar' WITH REPLACE threads 10;
