@@ -1,0 +1,2 @@
+--Limpiar el el plan cache.
+alter system clear SQL plan cache;

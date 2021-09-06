@@ -1,5 +1,7 @@
 do
 begin
+    USING SQLSCRIPT_SYNC AS SYNCLIB;
+    CALL SYNCLIB:SLEEP_SECONDS(10); 
 declare statement varchar(200);
 --select base64_decode('c2VsZWN0IFwiQ2FyZE5hbWVcIiwgXCJEb2NUb3RhbFwiIGZyb20gRFNMUFJPRFVDMi5PSU5W') into statement from dummy;
 execute immediate base64_decode('c2V0IHNjaGVtYSBEU0xQUk9EVUMy');

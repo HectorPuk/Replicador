@@ -1,0 +1,1 @@
+select USER_CODE,cast("ALLOWENCES" as binary), * from SBODEMOAR.ousr where USER_CODE in('manager','Catalina');

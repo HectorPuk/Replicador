@@ -1,0 +1,8 @@
+CREATE PROCEDURE TESTER()
+LANGUAGE SQLSCRIPT
+as 
+BEGIN
+SELECT top 1 "CardCode" FROM OCRD;
+END
+Debug External
+https://help.sap.com/viewer/52715f71adba4aaeb480d946c742d1f6/2.0.05/en-US/2bd6c1b20e6948edb1fe7ae2d6ca1c46.html
