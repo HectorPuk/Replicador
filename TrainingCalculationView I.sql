@@ -9,5 +9,9 @@ select * from "SBODEMOAR"."TESTView";
 --Paso #5 Agregar la vista del catalogo como agregation
 --Paso #6 Marcar los campos que quiero sean publicados.
 --Paso #7 Activar.
+--Nota es posible que al tratar de activar te de un error.
+--Error: SAP DBTech JDBC: [258]: insufficient privilege: Detailed info for this error can be found with guid 'A325A8C2280AD84EBE221EBCBCDDBF44'
+--Entonces usa para ver mas detalles CALL SYS.GET_INSUFFICIENT_PRIVILEGE_ERROR_DETAILS ('A325A8C2280AD84EBE221EBCBCDDBF44', ?)
+--Por ejemplo te puede dar IS_MISSING_ANALYTIC_PRIVILEDGE.
 --Paso #8 Testear.
 --Paso #9 Testear con Excel, por ejemplo.
