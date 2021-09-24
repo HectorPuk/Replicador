@@ -1,3 +1,4 @@
+#Uninstall and upgrade SAP HANA.
 cp "C:\SAPV10\51055068\DATA_UNITS\SAP HANA DATABASE 2.0 FOR B1\LINX64SUSE\*.sar" C:\SAPV10\HCLM51055068
 cp "C:\C:\SAPV10\51055068\DATA_UNITS\SAP HANA AFL 2.0 FOR B1\LINX64SUSE\*.sar" C:\SAPV10\HCLM51055068
 cp "C:\SAPV10\51055068\DATA_UNITS\SAP HANA CLIENT 2.0 FOR B1\LINX64SUSE\*.sar" C:\SAPV10\HCLM51055068
@@ -12,3 +13,4 @@ cd /tmp/exports/HCLM/SAP_HANA_DATABASE
  chmod 777 * -R
  cd SAP_HANA_DATABASE
  hdblcm
+#No esta arrancado el scriptserver, creo que me va a dar dolor de cabeza al instalar analytics.
