@@ -1,0 +1,2 @@
+No hay forma de evitar que la UDT sea accedida desde Service Layer.
+Esto me lleva a usar forzadamente UDO.
