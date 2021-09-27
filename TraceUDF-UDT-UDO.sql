@@ -21,7 +21,7 @@ cursor_140277990862848_c3535.execute(''' Insert into "SBODEMOAR"."UDO1" ("Code",
 cursor_140273670653952_c3535.execute(''' UPDATE "OUTB" T0 SET T0."LogTable" = ?  FROM "SBODEMOAR"."OUTB" T0 WHERE T0."TableName" = (?)   ''', (u'''AHECTORFUERA''', u'''HECTORFUERA'''))
 cursor_140273670653952_c3535.execute(''' UPDATE "OUTB" T0 SET T0."LogTable" = ?  FROM "SBODEMOAR"."OUTB" T0 WHERE T0."TableName" = (?)   ''', (u'''AHECTORFUERA2''', u'''HECTORFUERA2'''))
 
-
+La unica forma que encuentro de limitar el acceso via ServiceLayer es MOD_REWRITE
 
 
 
