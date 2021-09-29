@@ -1,0 +1,5 @@
+select 
+AUDIT_POLICY_NAME, 
+EVENT_STATUS,
+APPLICATION_USER_NAME,
+* from audit_log order by TIMESTAMP desc;
