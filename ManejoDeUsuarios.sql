@@ -18,3 +18,6 @@ SELECT DISTINCT object_type, privilege, grantee
 FROM SYS.GRANTED_PRIVILEGES
 where privilege = 'USER ADMIN';
 GRANT USER ADMIN TO TEST01; 
+
+--Password Lifetime
+ALTER USER <user_name> DISABLE PASSWORD LIFETIME
