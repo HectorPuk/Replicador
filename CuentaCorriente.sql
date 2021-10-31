@@ -8,6 +8,11 @@ SELECT
 	 T0."TransType" "TipoDoc Origen 13IN 24RC 14NC 30JE",
 	 T0."Ref1" "Ref1 es DocNum Sale de JDT1",
 	 T0."SourceID" "SourceID es el DocEntry de OINV u ORCT",
+	 T5."DocCur",
+	 T5."DocRate",
+	 T5."DocTotal",
+	 T5."DocTotalFC",
+	 
 	 T0."Line_ID" ,
 	 T0."Account",
 	 T0."Debit",
@@ -152,6 +157,7 @@ LEFT OUTER JOIN (SELECT T0."TransId" AS "TransId", T0."TransRowId" AS "TransRowI
 AND T2."TransRowId" = T0."Line_ID" 
 INNER JOIN "SBODEMOAR2"."OJDT" T3 ON T3."TransId" = T0."TransId" 
 LEFT OUTER JOIN "SBODEMOAR2"."OOAT" T4 ON T4."AbsID" = T3."AgrNo" 
+LEFT OUTER JOIN "SBODEMOAR2"."OINV" T5 ON T5."DocEntry" = T0."SourceID" and T0."TransType" = 13
 WHERE T0."ShortName" = 'C55-V2-NORET++' 
 AND T0."RefDate" >= TO_TIMESTAMP ('2021-01-01', 'YYYY-MM-DD') 
 AND T0."RefDate" <=  TO_TIMESTAMP ('2021-12-31', 'YYYY-MM-DD')  
