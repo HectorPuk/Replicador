@@ -7,3 +7,7 @@ declare statement varchar(200);
 execute immediate base64_decode('c2V0IHNjaGVtYSBEU0xQUk9EVUMy');
 execute immediate base64_decode('c2VsZWN0IGJhc2U2NF9lbmNvZGUoIkNhcmROYW1lIikgIlNpZ24iLCAiRG9jVG90YWwiICJWYWx1ZSIgZnJvbSBPUENI');
 end;
+
+--Cosas a tener en cuenta en el HANA Studio. Si le pones antes del DO un comentario NO LE GUSTA!!!.
+--Tampoco le gusta entre el do y el begin !!!!
+--TODO COMENTARIO DESPUES DE BEGIN!
