@@ -1,3 +1,21 @@
+--Crea un usuario basico para que pueda correr un Crystal
+
+CREATE USER OPERADOR2 PASSWORD Password02$ NO FORCE_FIRST_PASSWORD_CHANGE;
+ALTER USER OPERADOR2 DISABLE PASSWORD LIFETIME;
+GRANT SELECT on schema "SBODEMOAR2" to OPERADOR2; 
+GRANT EXECUTE on schema "SBODEMOAR2" to OPERADOR2; 
+--Crea un usuario basico para que pueda correr un Crystal
+
+--Si le quiero revocar un permiso
+REVOKE EXECUTE on schema "SBODEMOAR2" from OPERADOR2; 
+
+Si me da un error en crystal, hago copy/paste de la ventana que me da el GUID (no parece que copia pero copia) lo pego en un notepad++ y anduvo
+
+CALL SYS.GET_INSUFFICIENT_PRIVILEGE_ERROR_DETAILS ('B872FA4FD1EA7244A26105980C82F43A', ?)
+
+
+
+
 CREATE USER TEST01 PASSWORD Password01$;
 
 --Sintaxis completa: https://help.sap.com/viewer/4fe29514fd584807ac9f2a04f6754767/2.0.04/en-US/20d5ddb075191014b594f7b11ff08ee2.html
