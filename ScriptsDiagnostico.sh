@@ -29,3 +29,8 @@ for PID in `ps -ef| awk '/[/]usr[/]sap[/]SAPBusinessOne[/]Common[/]httpd[/]bin[/
 
 
 for PID in `ps -ef| awk '/[/]usr[/]sap[/]SAPBusinessOne[/]Common[/]httpd[/]bin[/]httpd/ {print $2}'`; do pmap -x $PID | tail -n 1 |  awk '/writable-private/ {print $3}' | cut -d 'K |  awk '{s+=$1} END {printf "%.0f GB", s/1000000}'
+
+
+Aca tiro el espacio ocupado por las aplicaciones del TOMCAT busco todos los procesos que tengan /bin/java en la string de ejecucion
+
+for PID in `ps -ef| awk '/[/]bin[/]java/ {print $2}'`; do pmap -x $PID | tail -n 1 |  awk '/writable-private/ {print $3}' | cut -d 'K' -f 1; done |  awk '{s+=$1} END {printf "%.0f GB", s/1000000}'
