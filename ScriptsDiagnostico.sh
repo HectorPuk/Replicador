@@ -17,3 +17,7 @@ for PID in `ps -ef| awk '/[/]usr[/]sap[/]SAPBusinessOne[/]Common[/]httpd[/]bin[/
 Obtener memoria de los RotateLog
 
 for PID in `ps -ef| awk '/[/]Common[/]httpd[/]bin[/]rotatelogs/ {print $2}'`; do pmap -x $PID | tail -n 1 |  awk '/writable-private/ {print $3}'; done
+
+
+
+for PID in `ps -ef| awk '/[/]usr[/]sap[/]SAPBusinessOne[/]Common[/]httpd[/]bin[/]httpd/ {print $2}'`; do pmap -x $PID | tail -n 1 |  awk '/writable-private/ {print $3}' | cut -d 'K' -f 1; done |  awk '{s+=$1} END {printf "%.0f", s}'
