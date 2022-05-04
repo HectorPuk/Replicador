@@ -13,3 +13,5 @@ select  * from OHEM join OUSR on OHEM."userId" = OUSR."USERID";
 --Todos los empleados que tengan usuario SAP. Aquellos que no tienen usuario SAP son exlcuidos por el inner join
 select  * from OHEM right join OUSR on OHEM."userId" = OUSR."USERID";
 --Todos los usarios SAP, tengan o no tengan registro de Empleado, efecto del right join
+select  * from OHEM full outer join OUSR on OHEM."userId" = OUSR."USERID";
+--Todos los usarios SAP (tenga o no empleado) y todos los Empleado (tengan o no usuario SAP9, efecto del full outer join
