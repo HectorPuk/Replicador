@@ -1,364 +1,400 @@
-CREATE PROCEDURE "VU_CTACTE_MAGNANI" (     
---/* Original debe ser VU_CTACTE */
+-- Asi se invoca una column view que se crea con el Stored Procedure select * from myView with parameters ('PLACEHOLDER'= ('$$anio$$', '2021'), 'PLACEHOLDER' = ('$$customer$$', 'C30546764040') );
+-- La result view la comento del stored Procedure.
+
+set schema TESTBACKUP3;
+--DROP PROCEDURE "VU_CTACTE1_MAGNANI";    
+--CREATE PROCEDURE "VU_CTACTE1_MAGNANI" (    
+Alter PROCEDURE "VU_CTACTE1_MAGNANI" ( 
+--/* Version1 enviada a Casa Magnani 02/08/22*/
 -- Ultima Versión enviada por Hector para trabajo de Cuenta Corriente - Esta se convierte a Store Procedure para luego
 -- el resultado trabajarlo en un Crystal.  26/5/22 17:09hs - Patricia
-	in ANIO int,
-	in CUSTOMER NVARCHAR(50),
---  HP 23/7/2022 cambio de estrategia, en lugar de devolver un recordset, se devuelve una tabla que luego la puedo usar en un select para filtrarla. 	 
---	in DATEFROM DATE,
---	in DATETO DATE,
-	OUT RECORDSET TABLE( "Number" INT, "TransId" INT, "RefDate" TIMESTAMP, "DocDueDate" TIMESTAMP, "DaysBetween" INT, "TransTypeDesc" VARCHAR(20), "Cancelacion" VARCHAR(3), "DocNum" NVARCHAR(11), "ObjType" NVARCHAR(20), "DocEntry" INT, "NroDocumento" NVARCHAR(14), "NumAtCard" NVARCHAR(100), "DocCur" NVARCHAR(3), "DocRate" DECIMAL(21,6), "CC-DocTotalFC" DECIMAL(32,6), "CC-PaidOpenBalanceFC" DECIMAL(33,6), "CC-PagoAplicadoFC" DECIMAL,  "CC-DocTotal" DECIMAL, "CC-PaidOpenBalance" DECIMAL(33,6), "Debit" DECIMAL(28,6), "Credit" DECIMAL(28,6), "CC-DocTotalCUMFC" DECIMAL(38,6), "CC-DocTotalCUM" DECIMAL, "CC-PaidOpenBalanceCUM" DECIMAL, "CC-DocTotalCUM_DC" DECIMAL(38,6), "CC-DocTotalHomogenea" DECIMAL, "FCCC-DocTotalCUM" DECIMAL(38,6) , "BalDueDeb" DECIMAL(21,6), "BalDueCred" DECIMAL(21,6), "Reconciliado" VARCHAR(1), "BalFcDeb" DECIMAL(21,6), "BalFcCred" DECIMAL(21,6), "BalScDeb" DECIMAL(21,6), "BalScCred" DECIMAL(21,6), "ReconciliadoFC" VARCHAR(1))
-	 )	
- LANGUAGE SQLSCRIPT 
+in ANIO int,
+in CUSTOMER NVARCHAR(50),
+--  HP 23/7/2022 cambio de estrategia, en lugar de devolver un recordset, se devuelve una tabla que luego la puedo usar en un select para filtrarla.
+-- in DATEFROM DATE,
+-- in DATETO DATE,
+OUT RECORDSET TABLE( "Number" INT, "TransId" INT, "RefDate" TIMESTAMP, "DocDueDate" TIMESTAMP, "DaysBetween" INT, 
+					 "TransTypeDesc" VARCHAR(20), "Cancelacion" VARCHAR(3), "DocNum" NVARCHAR(11), "ObjType" NVARCHAR(20), 
+					 "DocEntry" INT, "NroDocumento" NVARCHAR(15), "NumAtCard" NVARCHAR(100), "DocCur" NVARCHAR(3), 
+					 "DocRate" DECIMAL(21,6), "CC-DocTotalFC" DECIMAL(32,6), "CC-PaidOpenBalanceFC" DECIMAL(33,6), 
+					 "CC-PagoAplicadoFC" DECIMAL,  "CC-DocTotal" DECIMAL, "CC-PaidOpenBalance" DECIMAL(33,6), 
+					 "Debit" DECIMAL(28,6), "Credit" DECIMAL(28,6), "CC-DocTotalCUMFC" DECIMAL(38,6), "CC-DocTotalCUM" DECIMAL, 
+					 "CC-PaidOpenBalanceCUM" DECIMAL, "CC-DocTotalCUM_DC" DECIMAL(38,6), "CC-DocTotalHomogenea" DECIMAL, 
+					 "FCCC-DocTotalCUM" DECIMAL(38,6) , "BalDueDeb" DECIMAL(21,6), "BalDueCred" DECIMAL(21,6), 
+					 "Reconciliado" VARCHAR(1), "BalFcDeb" DECIMAL(21,6), "BalFcCred" DECIMAL(21,6), "BalScDeb" DECIMAL(21,6),
+					  "BalScCred" DECIMAL(21,6), "ReconciliadoFC" VARCHAR(1), "DescAbrev" NVARCHAR(3))
+)
+ LANGUAGE SQLSCRIPT
  READS SQL DATA
- WITH RESULT VIEW myView
+ --WITH RESULT VIEW myView1
  AS
-   	 GAN_DIFF_APAY NVARCHAR(15);
-	 PER_DIFF_APAY NVARCHAR(15);
- 	 GAN_DIFF_AREC NVARCHAR(15);
-   	 PER_DIFF_AREC NVARCHAR(15);   	 
- 	 contador      int;
- 	 CLI_O_PROV    int;
+    GAN_DIFF_APAY NVARCHAR(15);
+    PER_DIFF_APAY NVARCHAR(15);
+    GAN_DIFF_AREC NVARCHAR(15);
+    PER_DIFF_AREC NVARCHAR(15);  
+    contador      int;
+    CLI_O_PROV    int;
 
 BEGIN
 
 --  HP 23/7/2022 cambio de estrategia, en lugar de devolver un recordset, comentar evaluacion DATETO VACIO.
---	if DATETO < TO_TIMESTAMP ('2021-01-01', 'YYYY-MM-DD')
---	then
---	DATETO = CURRENT_DATE;
---	end if;
-	 
-	select case when "CardType" = 'C' then 1 
-				when "CardType" = 'S' then -1 
-				when "CardType" = 'L' then 0
-				end into CLI_O_PROV 
-		from OCRD where "CardCode" = CUSTOMER;
-	
-	select count(*) into contador from OACP where "Year" = ANIO;
-	if contador > 0 then
-		select "LinkAct_23", "LinkAct_26", "LinkAct_21", "LinkAct_25" into PER_DIFF_AREC, 
-          	GAN_DIFF_AREC, PER_DIFF_APAY, GAN_DIFF_APAY from OACP where "Year" = ANIO;
+-- if DATETO < TO_TIMESTAMP ('2021-01-01', 'YYYY-MM-DD')
+-- then
+-- DATETO = CURRENT_DATE;
+-- end if;
+
+select case when "CardType" = 'C' then 1
+			when "CardType" = 'S' then -1
+			when "CardType" = 'L' then 0
+end into CLI_O_PROV
+from OCRD where "CardCode" = CUSTOMER;
+
+select count(*) into contador from OACP where "Year" = ANIO;
+if contador > 0 then
+select "LinkAct_23", "LinkAct_26", "LinkAct_21", "LinkAct_25" into PER_DIFF_AREC,
+          GAN_DIFF_AREC, PER_DIFF_APAY, GAN_DIFF_APAY from OACP where "Year" = ANIO;
     else
-		    PER_DIFF_AREC = '0';
-		  	GAN_DIFF_AREC = '0'; 
-		   	PER_DIFF_APAY = '0';  
-		   	GAN_DIFF_APAY = '0';    	   
-   	end if;
+  		PER_DIFF_AREC = '0';
+  		GAN_DIFF_AREC = '0';
+  		PER_DIFF_APAY = '0';  
+  		GAN_DIFF_APAY = '0';      
+    end if;
 
 RECORDSET = select  
-		"Number", 
-		"TransId",
-		"RefDate",
-		"DocDueDate",
-		DAYS_BETWEEN( "DocDueDate", CURRENT_DATE) "DaysBetween",
-		"TransTypeDesc",
-		"Cancelacion",
-		"DocNum",
-		"ObjType",
-		"DocEntry",
-		"NroDocumento",
-		"NumAtCard",
-		"DocCur",
-		"DocRate",
-		"CC-DocTotalFC",
-		"CC-PaidOpenBalanceFC",
-		"CC-PagoAplicadoFC",
-		"CC-DocTotal",
-		"CC-PaidOpenBalance",
-		"Debit",
-		"Credit",
-		--Col17
-		sum("CC-DocTotalFC") over (order by "RefDate","Number" ) "CC-DocTotalCUMFC", 
-		sum("CC-DocTotal") over (order by "RefDate","Number" ) "CC-DocTotalCUM", 
-		-- Esa columna la uso para validar que me coincida con la CC de SAP
-		sum("CC-DocTotalHomogenea") over (order by "RefDate","Number" ) "CC-PaidOpenBalanceCUM", 
-		sum("Debit" - "Credit") over (order by "RefDate","Number" ) "CC-DocTotalCUM_DC", 
-		"CC-DocTotalHomogenea",
-		sum("FCDebit" - "FCCredit") over (order by "RefDate","Number" ) "FCCC-DocTotalCUM",
-		"BalDueDeb",
-		"BalDueCred",
-		"Reconciliado",
-		"BalFcDeb",
-		"BalFcCred",
-		"BalScDeb",
-		"BalScCred",
-		"ReconciliadoFC"
+"Number",
+"TransId",
+"RefDate",
+"DocDueDate",
+DAYS_BETWEEN( "DocDueDate", CURRENT_DATE) "DaysBetween",
+"TransTypeDesc",
+"Cancelacion",
+"DocNum",
+"ObjType",
+"DocEntry",
+"NroDocumento",
+"NumAtCard",
+"DocCur",
+"DocRate",
+"CC-DocTotalFC",
+"CC-PaidOpenBalanceFC",
+"CC-PagoAplicadoFC",
+"CC-DocTotal",
+"CC-PaidOpenBalance",
+"Debit",
+"Credit",
+--Col17
+sum("CC-DocTotalFC") over (order by "RefDate","Number" ) "CC-DocTotalCUMFC",
+sum("CC-DocTotal") over (order by "RefDate","Number" ) "CC-DocTotalCUM",
+-- Esa columna la uso para validar que me coincida con la CC de SAP
+sum("CC-DocTotalHomogenea") over (order by "RefDate","Number" ) "CC-PaidOpenBalanceCUM",
+sum("Debit" - "Credit") over (order by "RefDate","Number" ) "CC-DocTotalCUM_DC",
+"CC-DocTotalHomogenea",
+sum("FCDebit" - "FCCredit") over (order by "RefDate","Number" ) "FCCC-DocTotalCUM",
+"BalDueDeb",
+"BalDueCred",
+"Reconciliado",
+"BalFcDeb",
+"BalFcCred",
+"BalScDeb",
+"BalScCred",
+"ReconciliadoFC",
+"DescAbrev"
 
-	from 
-	(select  
+from
+(select  
 
-		"Number",
-		"TransId",
-		Max("RefDate") "RefDate",
-		Max("DocDueDate") "DocDueDate",
-		Max("ObjType") "ObjType",
-		Max("TransTypeDesc") "TransTypeDesc",
-		Max("Cancelacion") "Cancelacion",
-		Max("DocNum") "DocNum",
+"Number",
+"TransId",
+"Line_ID",
+Max("RefDate") "RefDate",
+Max("DocDueDate") "DocDueDate",
+Max("ObjType") "ObjType",
+Max("TransTypeDesc") "TransTypeDesc",
+Max("Cancelacion") "Cancelacion",
+Max("DocNum") "DocNum",
 
-		Max("DocEntry") "DocEntry",
-		Max("NroDocumento") "NroDocumento",
-		Max("NumAtCard") "NumAtCard",
-		Max("DocCur") "DocCur",
-		Max("DocRate") "DocRate",
-		Max("CC-DocTotalFC") "CC-DocTotalFC",
-		Max("CC-DocTotal") "CC-DocTotal",
-		Max("CC-PaidOpenBalanceFC") "CC-PaidOpenBalanceFC",
-		Max("CC-PaidOpenBalance") "CC-PaidOpenBalance",
-		SUM("Debit") "Debit",
-		SUM("Credit") "Credit",
-		SUM("FCDebit") "FCDebit",
-		SUM("FCCredit") "FCCredit",
-		Max("CC-DocTotalHomogenea") "CC-DocTotalHomogenea",
-		Max("BalDueDeb") "BalDueDeb",
-		Max("BalDueCred") "BalDueCred",
-		Max("Reconciliado") "Reconciliado",
-		Max("BalFcDeb") "BalFcDeb",
-		Max("BalFcCred") "BalFcCred",
-		Max("BalScDeb") "BalScDeb",
-		Max("BalScCred") "BalScCred",
-		Max("ReconciliadoFC") "ReconciliadoFC",
-		case when Max("CC-PagoAplicadoFC") != 0 then 
-			-CLI_O_PROV * Max("CC-PagoAplicadoFC") end	"CC-PagoAplicadoFC"
-		
-	from 
-	(SELECT
-		T3."Number" ,
-		T3."TransId",
-		T0."RefDate",
-		
-		case  	when T0."TransType" = 30 then T3."DueDate"
-				when T0."TransType" = 13 then T5."DocDueDate"
-				when T0."TransType" = 14 then T6."DocDueDate"
-				when T0."TransType" = 24 then T7."DocDueDate"
-				when T0."TransType" = 18 then T9."DocDueDate"
-				when T0."TransType" = 19 then TA."DocDueDate"
-				else ''
-				end "DocDueDate",
-				
-		T0."TransType" "ObjType",
-		
-		case	when T0."TransType" = 13  and T5."DocSubType" = '--' then 'Factura'
-				when T0."TransType" = 13  and T5."DocSubType" = 'DN' then 'Nota de Debito'
-				when T0."TransType" = 24 and T7."WTaxSum" != 0 then 'P.Recibido + Cert'
-				when T0."TransType" = 24 and T7."WTaxSum" = 0 then 'P.Recibido'
-				when T0."TransType" = 46 then 'P.Efectuado'
-				when T0."TransType" = 14 then 'Nota de Credito'
-				when T0."TransType" = 30 then 'Asiento'
-				when T0."TransType" = 321 then 'Reconciliación'
-				when T0."TransType" = 18  and T9."DocSubType" = '--' then 'Factura Prov.'
-				when T0."TransType" = 18  and T9."DocSubType" = 'DM' then 'Nota de Debito Prov'
-				when T0."TransType" = 19  then 'Nota de Credito Prov'
-				end "TransTypeDesc",
-				
-		case    when T7."Canceled" = 'Y' then 'CNL'
-				when T5."CANCELED" = 'Y' then 'CNL'
-				when T6."CANCELED" = 'Y' then 'CNL'
-				when T8."Canceled" = 'Y' then 'CNL'
-				when T9."CANCELED" = 'Y' then 'CNL'
-				when TA."CANCELED" = 'Y' then 'CNL'
-				else '   '
-				end "Cancelacion",
+Max("DocEntry") "DocEntry",
+Max("NroDocumento") "NroDocumento",
+Max("NumAtCard") "NumAtCard",
+Max("DocCur") "DocCur",
+Max("DocRate") "DocRate",
+Max("CC-DocTotalFC") "CC-DocTotalFC",
+Max("CC-DocTotal") "CC-DocTotal",
+Max("CC-PaidOpenBalanceFC") "CC-PaidOpenBalanceFC",
+Max("CC-PaidOpenBalance") "CC-PaidOpenBalance",
+SUM("Debit") "Debit",
+SUM("Credit") "Credit",
+SUM("FCDebit") "FCDebit",
+SUM("FCCredit") "FCCredit",
+Max("CC-DocTotalHomogenea") "CC-DocTotalHomogenea",
+Max("BalDueDeb") "BalDueDeb",
+Max("BalDueCred") "BalDueCred",
+Max("Reconciliado") "Reconciliado",
+Max("BalFcDeb") "BalFcDeb",
+Max("BalFcCred") "BalFcCred",
+Max("BalScDeb") "BalScDeb",
+Max("BalScCred") "BalScCred",
+Max("ReconciliadoFC") "ReconciliadoFC",
+case when Max("CC-PagoAplicadoFC") != 0 then
+-CLI_O_PROV * Max("CC-PagoAplicadoFC") end "CC-PagoAplicadoFC",
+Max("DescAbrev") "DescAbrev"
+from
 
-		T0."BaseRef" "DocNum",
+(SELECT
+T3."Number" ,
+T3."TransId",
+T0."Line_ID",
+T0."RefDate",
 
-		case 	when T0."TransType" in(24,46,30,321) then T0."CreatedBy"
-				else T0."SourceID" 
-				end "DocEntry",
-				
-		case    when T0."TransType" = 13 
-					then lpad(T5."PTICode", 5, '0') || '-' ||  
-					coalesce(lpad(cast(T5."FolNumFrom" as VARCHAR),8,'0'),'N/A')
-				when T0."TransType" = 14 
-					then lpad(T6."PTICode", 5, '0') || '-' ||  
-					coalesce(lpad(cast(T6."FolNumFrom" as VARCHAR),8,'0'),'N/A')
-				when T0."TransType" = 18 
-					then lpad(T9."PTICode", 5, '0') || '-' ||  
-					coalesce(lpad(cast(T9."FolNumFrom" as VARCHAR),8,'0'),'N/A')
-				when T0."TransType" = 19 
-					then lpad(TA."PTICode", 5, '0') || '-' ||  
-					coalesce(lpad(cast(TA."FolNumFrom" as VARCHAR),8,'0'),'N/A')
-				else T0."BaseRef"
-				end "NroDocumento", 
-				
-		case    when T0."TransType" = 13 then T5."NumAtCard"
-				else ''
-				end "NumAtCard",
+case   when T0."TransType" = 30 then T3."DueDate"
+when T0."TransType" = 13 then T5."DocDueDate"
+when T0."TransType" = 14 then T6."DocDueDate"
+when T0."TransType" = 24 then T7."DocDueDate"
+when T0."TransType" = 18 then T9."DocDueDate"
+when T0."TransType" = 19 then TA."DocDueDate"
+else ''
+end "DocDueDate",
 
---		case	when T0."TransType" = 13 then T5."DocCur" 
---				when T0."TransType" = 14 then T6."DocCur" 
---				when T0."TransType" = 24 then T7."DocCurr" 
---				when T0."TransType" = 46 then T8."DocCurr" 
---				when T0."TransType" = 18 then T9."DocCur" 
---				when T0."TransType" = 19 then TA."DocCur" 
---				end "DocCur",
-		case	when T0."FCCurrency" is NULL then 'ARS' else "FCCurrency" end "DocCur",
-				
-		case	when T0."TransType" = 13 then T5."DocRate" 
-				when T0."TransType" = 14 then T6."DocRate" 
---				Potencialmente podria ser T0.SystemRate				
-				when T0."TransType" = 24 and T0."FCCurrency" is NULL then 1 
-				when T0."TransType" = 24  then T7."DocRate" 
-				when T0."TransType" = 46 then T8."DocRate" 
-				when T0."TransType" = 18 then T9."DocRate" 
-				when T0."TransType" = 19 then TA."DocRate" 
-				end "DocRate",
-				
-		case	when T0."TransType" = 13 and T0."FCCurrency" is not NULL then CLI_O_PROV * coalesce(T5."DocTotalFC",0) 
-				when T0."TransType" = 14 and T0."FCCurrency" is not NULL then CLI_O_PROV * coalesce(-T6."DocTotalFC",0) 
-				when T0."TransType" = 24 and T0."FCCurrency" is not NULL then CLI_O_PROV * coalesce(T7."DocTotalFC",0) 
-				when T0."TransType" = 46 and T0."FCCurrency" is not NULL then CLI_O_PROV * coalesce(T8."DocTotalFC",0) 
-				when T0."TransType" = 18 and T0."FCCurrency" is not NULL then CLI_O_PROV * coalesce(T9."DocTotalFC",0) 
-				when T0."TransType" = 19 and T0."FCCurrency" is not NULL then CLI_O_PROV * coalesce(-TA."DocTotalFC",0) 
-				end "CC-DocTotalFC", --Total del documento en moneda extranjera
+T0."TransType" "ObjType",
+
+case when T0."TransType" = 13  and T5."DocSubType" = '--' then 'Factura'
+when T0."TransType" = 13  and T5."DocSubType" = 'DN' then 'Nota de Debito'
+when T0."TransType" = 24 and T7."WTaxSum" != 0 then 'P.Recibido + Cert'
+when T0."TransType" = 24 and T7."WTaxSum" = 0 then 'P.Recibido'
+when T0."TransType" = 46 then 'P.Efectuado'
+when T0."TransType" = 14 then 'Nota de Credito'
+when T0."TransType" = 30 then 'Asiento'
+when T0."TransType" = 321 then 'Reconciliación'
+when T0."TransType" = 18  and T9."DocSubType" = '--' then 'Factura Prov.'
+when T0."TransType" = 18  and T9."DocSubType" = 'DM' then 'Nota de Debito Prov'
+when T0."TransType" = 19  then 'Nota de Credito Prov'
+end "TransTypeDesc",
+
+case    when T7."Canceled" = 'Y' then 'CNL'
+when T5."CANCELED" = 'Y' then 'CNL'
+when T6."CANCELED" = 'Y' then 'CNL'
+when T8."Canceled" = 'Y' then 'CNL'
+when T9."CANCELED" = 'Y' then 'CNL'
+when TA."CANCELED" = 'Y' then 'CNL'
+else '   '
+end "Cancelacion",
+
+T0."BaseRef" "DocNum",
+
+case when T0."TransType" in(24,46,30,321) then T0."CreatedBy"
+else T0."SourceID"
+end "DocEntry",
+
+case    when T0."TransType" = 13
+then lpad(T5."PTICode", 5, '0') || '-' ||  
+		coalesce(lpad(cast(T5."FolNumFrom" as VARCHAR),8,'0') ||
+		lpad(T5."Letter", 1,' '),'N/A')
+when T0."TransType" = 14
+then lpad(T6."PTICode", 5, '0') || '-' ||  
+		coalesce(lpad(cast(T6."FolNumFrom" as VARCHAR),8,'0') ||
+		lpad(T6."Letter", 1,' '),'N/A')
+when T0."TransType" = 18
+then lpad(T9."PTICode", 5, '0') || '-' ||  
+		coalesce(lpad(cast(T9."FolNumFrom" as VARCHAR),8,'0') ||
+		lpad(T9."Letter", 1,' '),'N/A')
+when T0."TransType" = 19
+then lpad(TA."PTICode", 5, '0') || '-' ||  
+		coalesce(lpad(cast(TA."FolNumFrom" as VARCHAR),8,'0') ||
+		lpad(TA."Letter", 1,' '),'N/A')
+else T0."BaseRef"
+end "NroDocumento",
+
+case    when T0."TransType" = 13 then T5."NumAtCard"
+else ''
+end "NumAtCard",
+
+-- case when T0."TransType" = 13 then T5."DocCur"
+-- when T0."TransType" = 14 then T6."DocCur"
+-- when T0."TransType" = 24 then T7."DocCurr"
+-- when T0."TransType" = 46 then T8."DocCurr"
+-- when T0."TransType" = 18 then T9."DocCur"
+-- when T0."TransType" = 19 then TA."DocCur"
+-- end "DocCur",
+case when T0."FCCurrency" is NULL then 'ARS' else T0."FCCurrency" end "DocCur",
+
+case when T0."TransType" = 13 then T5."DocRate"
+when T0."TransType" = 14 then T6."DocRate"
+-- Potencialmente podria ser T0.SystemRate
+when T0."TransType" = 24 and T0."FCCurrency" is NULL then 1
+when T0."TransType" = 24  then T7."DocRate"
+when T0."TransType" = 46 then T8."DocRate"
+when T0."TransType" = 18 then T9."DocRate"
+when T0."TransType" = 19 then TA."DocRate"
+end "DocRate",
+
+case when T0."TransType" = 13 and T0."FCCurrency" is not NULL then CLI_O_PROV * coalesce(T5."DocTotalFC",0)
+when T0."TransType" = 14 and T0."FCCurrency" is not NULL then CLI_O_PROV * coalesce(-T6."DocTotalFC",0)
+when T0."TransType" = 24 and T0."FCCurrency" is not NULL then CLI_O_PROV * coalesce(T7."DocTotalFC",0)
+when T0."TransType" = 46 and T0."FCCurrency" is not NULL then CLI_O_PROV * coalesce(T8."DocTotalFC",0)
+when T0."TransType" = 18 and T0."FCCurrency" is not NULL then CLI_O_PROV * coalesce(T9."DocTotalFC",0)
+when T0."TransType" = 19 and T0."FCCurrency" is not NULL then CLI_O_PROV * coalesce(-TA."DocTotalFC",0)
+end "CC-DocTotalFC", --Total del documento en moneda extranjera
  
-		case    
-				-- CLI_O_PROV tiene 1 si es Cliente o -1 si es Proveedor => Los debitos tiene que ser positivos y creditos negativos
-				when T0."TransType" = 13 and T5."DocCur" = 'ARS'    
-					then CLI_O_PROV * coalesce(T5."DocTotal",0)   
-				 -- Si es un asiento con un credito a la cuenta de activo que representa al cliente tiene que ser negativo
-				when T0."TransType" in(30) and T0."Credit" > 0      
-					then null --CLI_O_PROV * coalesce(-T0."Credit",0)    
-				-- Si es un asiento con un debito en cuenta del cliente debe ir con signo positivo
-				when T0."TransType" in(30) and T0."Debit" > 0      
-					then null -- CLI_O_PROV * coalesce(T0."Debit",0)      
-				when T0."TransType" = 14 and T6."DocCur" = 'ARS'    
-					then CLI_O_PROV * coalesce(-T6."DocTotal",0) 
-				-- Si es un pago efectivo de un cliente se acredita a la cuenta del activo
-				when T0."TransType" = 24 and T0."Credit" != 0     
-					then CLI_O_PROV * -(coalesce(T7."DocTotal",0)+coalesce(T7."WTaxSum",0))  
-				-- Si es una cancelacion de pago se vuelve a debitar de la cuenta del activo
-				when T0."TransType" = 24 and T0."Debit" != 0     
-					then CLI_O_PROV *   (coalesce(T7."DocTotal",0)+coalesce(T7."WTaxSum",0))    
-				when T0."TransType" = 46                           
-					then CLI_O_PROV * coalesce(-T8."DocTotal",0) 
-				when T0."TransType" = 18 and T9."DocCur" = 'ARS'    
-					then  CLI_O_PROV * coalesce(T9."DocTotal",0)
-				when T0."TransType" = 19 and TA."DocCur" = 'ARS'    
-					then CLI_O_PROV * coalesce(-TA."DocTotal",0)
-				end "CC-DocTotal", --Total del documento en moneda local
+case    
+-- CLI_O_PROV tiene 1 si es Cliente o -1 si es Proveedor => Los debitos tiene que ser positivos y creditos negativos
+when T0."TransType" = 13 and T5."DocCur" = 'ARS'    
+then CLI_O_PROV * coalesce(T5."DocTotal",0)  
+-- Si es un asiento con un credito a la cuenta de activo que representa al cliente tiene que ser negativo
+when T0."TransType" in(30) and T0."Credit" > 0      
+then null --CLI_O_PROV * coalesce(-T0."Credit",0)    
+-- Si es un asiento con un debito en cuenta del cliente debe ir con signo positivo
+when T0."TransType" in(30) and T0."Debit" > 0      
+then null -- CLI_O_PROV * coalesce(T0."Debit",0)      
+when T0."TransType" = 14 and T6."DocCur" = 'ARS'    
+then CLI_O_PROV * coalesce(-T6."DocTotal",0)
+-- Si es un pago efectivo de un cliente se acredita a la cuenta del activo
+when T0."TransType" = 24 and T0."Credit" != 0    
+then CLI_O_PROV * -(coalesce(T7."DocTotal",0)+coalesce(T7."WTaxSum",0))  
+-- Si es una cancelacion de pago se vuelve a debitar de la cuenta del activo
+when T0."TransType" = 24 and T0."Debit" != 0    
+then CLI_O_PROV *   (coalesce(T7."DocTotal",0)+coalesce(T7."WTaxSum",0))    
+when T0."TransType" = 46                          
+then CLI_O_PROV * coalesce(-T8."DocTotal",0)
+when T0."TransType" = 18 and T9."DocCur" = 'ARS'    
+then  CLI_O_PROV * coalesce(T9."DocTotal",0)
+when T0."TransType" = 19 and TA."DocCur" = 'ARS'    
+then CLI_O_PROV * coalesce(-TA."DocTotal",0)
+end "CC-DocTotal", --Total del documento en moneda local
 
-		case    when T0."TransType" = 13    
-					then CLI_O_PROV * coalesce(T5."DocTotal",0)
-				when T0."TransType" in(30)  
-					then null --CLI_O_PROV * coalesce(T0."Debit" - T0."Credit",0)
-				when T0."TransType" = 14    
-					then CLI_O_PROV * coalesce(-T6."DocTotal",0) 
-				when T0."TransType" = 24 and T0."Credit" != 0   
-					then CLI_O_PROV * -(coalesce(T7."DocTotal",0)+coalesce(T7."WTaxSum",0)) 
-				when T0."TransType" = 24 and T0."Debit" != 0   
-					then CLI_O_PROV * (coalesce(T7."DocTotal",0)+coalesce(T7."WTaxSum",0)) 
-				when T0."TransType" = 46    
-					then CLI_O_PROV * coalesce(-T8."DocTotal",0) 
-				when T0."TransType" = 18    
-					then CLI_O_PROV * coalesce(T9."DocTotal",0)
-				when T0."TransType" = 19    
-					then CLI_O_PROV * coalesce(-TA."DocTotal",0)
-				end "CC-DocTotalHomogenea",
+case    when T0."TransType" = 13    
+then CLI_O_PROV * coalesce(T5."DocTotal",0)
+when T0."TransType" in(30)  
+then null --CLI_O_PROV * coalesce(T0."Debit" - T0."Credit",0)
+when T0."TransType" = 14    
+then CLI_O_PROV * coalesce(-T6."DocTotal",0)
+when T0."TransType" = 24 and T0."Credit" != 0  
+then CLI_O_PROV * -(coalesce(T7."DocTotal",0)+coalesce(T7."WTaxSum",0))
+when T0."TransType" = 24 and T0."Debit" != 0  
+then CLI_O_PROV * (coalesce(T7."DocTotal",0)+coalesce(T7."WTaxSum",0))
+when T0."TransType" = 46    
+then CLI_O_PROV * coalesce(-T8."DocTotal",0)
+when T0."TransType" = 18    
+then CLI_O_PROV * coalesce(T9."DocTotal",0)
+when T0."TransType" = 19    
+then CLI_O_PROV * coalesce(-TA."DocTotal",0)
+end "CC-DocTotalHomogenea",
 
-		case	when T0."TransType" = 13 and T0."FCCurrency" is not NULL 
-					then CLI_O_PROV * coalesce(T5."DocTotalFC" - T5."PaidFC",0) 
-					when T0."TransType" = 14 and T0."FCCurrency" is not NULL 
-					then CLI_O_PROV * coalesce(-(T6."DocTotalFC" - T6."PaidFC"),0) 
-				when T0."TransType" = 24 and T0."FCCurrency" is not NULL 
-					then CLI_O_PROV * coalesce(T7."OpenBalFc",0)  
-				when T0."TransType" = 46 and T0."FCCurrency" is not NULL 
-					then CLI_O_PROV * coalesce(T8."OpenBalFc",0)
-				when T0."TransType" = 18 and T0."FCCurrency" is not NULL 
-					then CLI_O_PROV * coalesce(T9."DocTotalFC" - T9."PaidFC",0) 
-				when T0."TransType" = 19 and T0."FCCurrency" is not NULL 
-					then CLI_O_PROV * coalesce(-(TA."DocTotalFC" - TA."PaidFC"),0) 
-				end "CC-PaidOpenBalanceFC",
+case when T0."TransType" = 13 and T0."FCCurrency" is not NULL
+then CLI_O_PROV * coalesce(T5."DocTotalFC" - T5."PaidFC",0)
+when T0."TransType" = 14 and T0."FCCurrency" is not NULL
+then CLI_O_PROV * coalesce(-(T6."DocTotalFC" - T6."PaidFC"),0)
+when T0."TransType" = 24 and T0."FCCurrency" is not NULL
+then CLI_O_PROV * coalesce(T7."OpenBalFc",0)  
+when T0."TransType" = 46 and T0."FCCurrency" is not NULL
+then CLI_O_PROV * coalesce(T8."OpenBalFc",0)
+when T0."TransType" = 18 and T0."FCCurrency" is not NULL
+then CLI_O_PROV * coalesce(T9."DocTotalFC" - T9."PaidFC",0)
+when T0."TransType" = 19 and T0."FCCurrency" is not NULL
+then CLI_O_PROV * coalesce(-(TA."DocTotalFC" - TA."PaidFC"),0)
+end "CC-PaidOpenBalanceFC",
 
-		case	when T0."TransType" = 13 and T5."CANCELED" = 'N' and T5."DocCur" = 'ARS'    
-					then CLI_O_PROV * coalesce((T5."DocTotal" - T5."PaidToDate"),0) 
-				when T0."TransType" in(30) 
-					then null --coalesce(-("BalDueCred" - T0."BalDueDeb"),0)
-				when T0."TransType" = 14 and T6."CANCELED" = 'N' and T6."DocCur" = 'ARS'    
-					then CLI_O_PROV * coalesce(-(T6."DocTotal" - T6."PaidToDate"),0) 
-				when T0."TransType" = 24 and T7."Canceled" = 'N' 
-					then CLI_O_PROV * coalesce(-T7."OpenBal",0) 
-				when T0."TransType" = 46 and T8."Canceled" = 'N' 
-					then CLI_O_PROV * coalesce(T8."OpenBal",0)
-				when T0."TransType" = 18 and T9."CANCELED" = 'N' and T9."DocCur" = 'ARS'    
-					then CLI_O_PROV * coalesce((T9."DocTotal" - T9."PaidToDate"),0) 
-				when T0."TransType" = 19 and TA."CANCELED" = 'N' and TA."DocCur" = 'ARS'    
-					then CLI_O_PROV * coalesce(-(TA."DocTotal" - TA."PaidToDate"),0) 
-				end "CC-PaidOpenBalance",
-				
-		T0."Debit",
-		T0."Credit",
-		T0."FCDebit",
-		T0."FCCredit",
-		
-		T0."BalDueDeb",
-		T0."BalDueCred",
-	    CASE When (("T0"."BalDueDeb" - "T0"."BalDueCred") <> '0'
-    		OR ("T0"."BalScDeb" - "T0"."BalScCred") <> '0')
-				Then '0'
-				Else '1'
-		END As "Reconciliado",
-		
-		T0."BalFcDeb",
-		T0."BalFcCred",
-		T0."BalScDeb",
-		T0."BalScCred",
-		CASE When (("T0"."BalFcDeb" - "T0"."BalFcCred") <> '0'
-			OR ("T0"."BalScDeb" - "T0"."BalScCred") <> '0')
-   				Then '0'
-				Else '1'
-		END As "ReconciliadoFC",
-		
-		case	when T0."TransType" = 24 and T7."Canceled" = 'N' then
-				(select sum("AppliedFC") from RCT2 where "DocNum" = T7."DocEntry") 
-				end "CC-PagoAplicadoFC"
-		
-		  
-	FROM "JDT1" T0 
-		LEFT OUTER JOIN "OUSR" T1 ON T1."USERID" = T0."UserSign" 
-		LEFT OUTER JOIN	(SELECT T0."TransId" AS "TransId", T0."TransRowId" AS "TransRowId", MAX(T0."ReconNum") AS "MaxReconNum" 
-		FROM  "ITR1" T0  GROUP BY T0."TransId", T0."TransRowId") T2 
-			ON T2."TransId" = T0."TransId" 
+case when T0."TransType" = 13 and T5."CANCELED" = 'N' and T5."DocCur" = 'ARS'    
+then CLI_O_PROV * coalesce((T5."DocTotal" - T5."PaidToDate"),0)
+when T0."TransType" in(30)
+then null --coalesce(-("BalDueCred" - T0."BalDueDeb"),0)
+when T0."TransType" = 14 and T6."CANCELED" = 'N' and T6."DocCur" = 'ARS'    
+then CLI_O_PROV * coalesce(-(T6."DocTotal" - T6."PaidToDate"),0)
+when T0."TransType" = 24 and T7."Canceled" = 'N'
+then CLI_O_PROV * coalesce(-T7."OpenBal",0)
+when T0."TransType" = 46 and T8."Canceled" = 'N'
+then CLI_O_PROV * coalesce(T8."OpenBal",0)
+when T0."TransType" = 18 and T9."CANCELED" = 'N' and T9."DocCur" = 'ARS'    
+then CLI_O_PROV * coalesce((T9."DocTotal" - T9."PaidToDate"),0)
+when T0."TransType" = 19 and TA."CANCELED" = 'N' and TA."DocCur" = 'ARS'    
+then CLI_O_PROV * coalesce(-(TA."DocTotal" - TA."PaidToDate"),0)
+end "CC-PaidOpenBalance",
 
-			AND T2."TransRowId" = T0."Line_ID" 
-		INNER JOIN "OJDT" T3 ON T3."TransId" = T0."TransId" 
-		LEFT OUTER JOIN "OOAT" T4 ON T4."AbsID" = T3."AgrNo" 
-		LEFT OUTER JOIN "OINV" T5 ON T5."DocEntry" = T0."SourceID" and T0."TransType" = 13
-		LEFT OUTER JOIN "ORIN" T6 ON T6."DocEntry" = T0."SourceID" and T0."TransType" = 14
-		LEFT OUTER JOIN "OPCH" T9 ON T9."DocEntry" = T0."SourceID" and T0."TransType" = 18
-		LEFT OUTER JOIN "ORPC" TA ON TA."DocEntry" = T0."SourceID" and T0."TransType" = 19
-		LEFT OUTER JOIN 
-			(select * from ORCT left join (select ORCT."DocEntry" "DocEntry2", coalesce(sum(OWTC."SumPercpAm"),0) "WTaxSum" 
-			from ORCT left join OWTC 
-			on ORCT."DocEntry" = OWTC."RctAbs" and OWTC."RctType" = 24 
-			group by ORCT."DocEntry") ORCTxOWTC on ORCTxOWTC."DocEntry2" = ORCT."DocEntry") T7
-			--(select * from ORCT left join (select ORCT."DocEntry" "DocEntry2", SUM(WTX1."WTaxSum") "WTaxSum" 
-			-- from ORCT left join OWTX on ORCT."DocEntry" = OWTX."SrcObjAbs" and OWTX."SrcObjType" = 24 
-			-- join WTX1 on OWTX."AbsEntry" = WTX1."AbsEntry" group by ORCT."DocEntry") 
-			-- ORCTxOWTX on ORCTxOWTX."DocEntry2" = ORCT."DocEntry") T7 
+T0."Debit",
+T0."Credit",
+T0."FCDebit",
+T0."FCCredit",
+
+T0."BalDueDeb",
+T0."BalDueCred",
+   CASE When (("T0"."BalDueDeb" - "T0"."BalDueCred") <> '0'
+    OR ("T0"."BalScDeb" - "T0"."BalScCred") <> '0')
+Then '0'  --no reconciliado 
+Else '1'
+END As "Reconciliado",
+
+T0."BalFcDeb",
+T0."BalFcCred",
+T0."BalScDeb",
+T0."BalScCred",
+CASE When (("T0"."BalFcDeb" - "T0"."BalFcCred") <> '0'
+OR ("T0"."BalScDeb" - "T0"."BalScCred") <> '0')
+    Then '0'
+Else '1'
+END As "ReconciliadoFC",
+
+case when T0."TransType" = 24 and T7."Canceled" = 'N' then
+(select sum("AppliedFC") from RCT2 where "DocNum" = T7."DocEntry")
+end "CC-PagoAplicadoFC",
+
+case when T0."TransType" = 13  and T5."DocSubType" = '--' then 'FCC' --'Factura'
+when T0."TransType" = 13  and T5."DocSubType" = 'DN' then 'NDB'      --'Nota de Debito'
+when T0."TransType" = 24 and T7."WTaxSum" != 0 then 'P+C'            --'P.Recibido + Cert'
+when T0."TransType" = 24 and T7."WTaxSum" = 0 then 'PRE'             --'P.Recibido'
+when T0."TransType" = 46 then 'PEF'                                  --'P.Efectuado'
+when T0."TransType" = 14 then 'NCC'                                  --'Nota de Credito'
+when T0."TransType" = 30 then 'ASI'                                  --'Asiento'
+when T0."TransType" = 321 then 'REC'                                 --'Reconciliación'
+when T0."TransType" = 18  and T9."DocSubType" = '--' then 'FCP'      --'Factura Prov.'
+when T0."TransType" = 18  and T9."DocSubType" = 'DM' then 'NDP'      --'Nota de Debito Prov'
+when T0."TransType" = 19  then 'NCP'                                 --'Nota de Credito Prov'
+end "DescAbrev"  -- Descripción Abreviada
+
+ 
+FROM "JDT1" T0
+LEFT OUTER JOIN "OUSR" T1 ON T1."USERID" = T0."UserSign"
+LEFT OUTER JOIN (SELECT T0."TransId" AS "TransId", T0."TransRowId" AS "TransRowId", MAX(T0."ReconNum") AS "MaxReconNum"
+FROM  "ITR1" T0  GROUP BY T0."TransId", T0."TransRowId") T2
+ON T2."TransId" = T0."TransId"
+
+AND T2."TransRowId" = T0."Line_ID"
+INNER JOIN "OJDT" T3 ON T3."TransId" = T0."TransId"
+LEFT OUTER JOIN "OOAT" T4 ON T4."AbsID" = T3."AgrNo"
+LEFT OUTER JOIN "OINV" T5 ON T5."DocEntry" = T0."SourceID" and T0."TransType" = 13
+LEFT OUTER JOIN "ORIN" T6 ON T6."DocEntry" = T0."SourceID" and T0."TransType" = 14
+LEFT OUTER JOIN "OPCH" T9 ON T9."DocEntry" = T0."SourceID" and T0."TransType" = 18
+LEFT OUTER JOIN "ORPC" TA ON TA."DocEntry" = T0."SourceID" and T0."TransType" = 19
+LEFT OUTER JOIN
+(select * from ORCT left join (select ORCT."DocEntry" "DocEntry2", coalesce(sum(OWTC."SumPercpAm"),0) "WTaxSum"
+from ORCT left join OWTC
+on ORCT."DocEntry" = OWTC."RctAbs" and OWTC."RctType" = 24
+group by ORCT."DocEntry") ORCTxOWTC on ORCTxOWTC."DocEntry2" = ORCT."DocEntry") T7
+--(select * from ORCT left join (select ORCT."DocEntry" "DocEntry2", SUM(WTX1."WTaxSum") "WTaxSum"
+-- from ORCT left join OWTX on ORCT."DocEntry" = OWTX."SrcObjAbs" and OWTX."SrcObjType" = 24
+-- join WTX1 on OWTX."AbsEntry" = WTX1."AbsEntry" group by ORCT."DocEntry")
+-- ORCTxOWTX on ORCTxOWTX."DocEntry2" = ORCT."DocEntry") T7
 
 
-		ON T7."DocEntry" = T0."CreatedBy" and T0."TransType" = 24
-		LEFT OUTER JOIN "OVPM" T8 ON T8."DocEntry" = T0."CreatedBy" and T0."TransType" = 46
-		WHERE T0."ShortName" = :CUSTOMER 
---		AND T0."RefDate" >= TO_TIMESTAMP ('2022-01-01', 'YYYY-MM-DD') 
-		AND T0."RefDate" <=  CURRENT_DATE  
-		ORDER BY T0."RefDate" ASC,	T0."TransId" ASC,	T0."Line_ID" ASC
-		)
-		GROUP BY "Number","TransId"
-	);
-	
---  HP 23/7/2022 cambio de estrategia, en lugar de devolver un recordset, se devuelve una tabla que luego la puedo usar en un select para filtrarla. 	 
+ON T7."DocEntry" = T0."CreatedBy" and T0."TransType" = 24
+LEFT OUTER JOIN "OVPM" T8 ON T8."DocEntry" = T0."CreatedBy" and T0."TransType" = 46
+WHERE T0."ShortName" = :CUSTOMER
+-- AND T0."RefDate" >= TO_TIMESTAMP ('2022-01-01', 'YYYY-MM-DD')
+AND T0."RefDate" <=  CURRENT_DATE  
+ORDER BY T0."RefDate" ASC, T0."TransId" ASC, T0."Line_ID" ASC
+)
+GROUP BY "Number","TransId", "Line_ID"
+);
+
+--  HP 23/7/2022 cambio de estrategia, en lugar de devolver un recordset, se devuelve una tabla que luego la puedo usar en un select para filtrarla.
 --select * from :RECORDSET2; -- where "RefDate" >= DATEFROM AND "RefDate" <= DATETO;
---	;	
+-- ;
 
 --Know How.
 --JDT1."ShortName" Tiene una Cuenta Contable o un SN
 --JDT1."ShortName" Con Codigo de SN significa que este asiento esta vinculado con el cliente. Todo lo que tenga sentido contable y este relacionado tiene este campo definido con SN.
 --JDT1."ShortName" contiene una cuenta contable o un Codigo de SN. Si es Codigo de SN, significa que este asiento esta vinculado con el cliente. Todo lo que tenga sentido contable y este relacionado tiene este campo definido con SN.
 --OJDT."TransId" es identifcador unico de asiento. En OJDT debe habe un solo registro
---JDT1."Line_ID"+ JDT1."TransId" es identifcador unico de la linea de asiento. 
---El SN tiene tres cuentas contables asociadas, 
+--JDT1."Line_ID"+ JDT1."TransId" es identifcador unico de la linea de asiento.
+--El SN tiene tres cuentas contables asociadas,
 --"Deudas Pendientes" , "Descuento en Efectivo Provisional", "Tipo de Cambio Provisional"
 --Si el SN es Cliente las cuentas son del Activo Por defecto: 1.1.040.10.000 , 1.1.040.20.998, 1.1.040.20.999 -- (Titulo Superior 1.1.040.00.000 "DEUDORES X VENTA")
 --Si el SN es Proveedor las cuentas son del Pasivo Por defecto: 2.1.010.10.001 (Titulo Superior 2.1.010.00.000 "DEUDAS COMERCIALES"), 2.1.010.30.998, 2.1.010.30.999 ("Provisiones y facturas a recibir")
@@ -368,33 +404,33 @@ RECORDSET = select
 --JDT1."TransType" En el caso 13 Factura Cliente/ND (o 18 Factura Proveedor / ND), no hay forma de diferenciarlo en el asiento si es ND o Factura. La alternativa es ir a buscarlo a OINV u OPCH.
 --JDT1."TransType" En el caso 14 NC (o 19 NC Proveedor), Vincular con tablas  ORIN u ORPC.
 --JDT1."TransType" En el caso 24 Pagos Recibidos (o 46 Pagos Efectuados), Vincular con tablas ORCT u OVPM.
---JDT1."TransType" T0."CreatedBy" (Para Documentos de Maketing) vs T0."SourceID" (Para Pagos) Ambos indentifican una entrada absoluta. 
+--JDT1."TransType" T0."CreatedBy" (Para Documentos de Maketing) vs T0."SourceID" (Para Pagos) Ambos indentifican una entrada absoluta.
 --OINV, ORIN, (Proveedor OPCH, ORPC) "DocCur" Para sacar el tipo de Moneda. ORCT / OVPM para sacarlo de pagos.
 --ORCT / OVPM CashSum vs DocTotal.
---Marketing Document "PaidSumFC" vs Pagos y "OpenBal" 
+--Marketing Document "PaidSumFC" vs Pagos y "OpenBal"
 --Por pagos recibidos/efectuados aparece mas de una linea
---Se agrega codigo de transaccion no documentado 321. 
+--Se agrega codigo de transaccion no documentado 321.
 --OACP Contiene las cuentas de la determinicion de cuentas del año en curso."LinkAct_21", "LinkAct_23", "LinkAct_25" y "LinkAct_26" tienen las cuentas por diferencia de cambio.
---Aplico la estrategia de consolidar por OJDT."TransId" y hago la sumatoria de creditos y debitos. 
+--Aplico la estrategia de consolidar por OJDT."TransId" y hago la sumatoria de creditos y debitos.
 -- Interesate... Session Context SET 'VARA' = 'C50000-V3'; SELECT SESSION_CONTEXT('VARA') from dummy;
 --[%%0] [%%1]
 --T7 Implica la ORCT unida a la OWTX/WTX1 (retenciones) T3 es OJDT y T0 es JDT1 T0.CreatedBy en casos es coincidente con el SourceID ....
 -- cambio por T3 BaseRef.
 --CUIDADO ORCT usa DocEntry como clave unica, pero en ls RCT1 a n, el campo DocNum es = a DocEntry del ORCT...
---LEFT OUTER JOIN ORCT T7 
+--LEFT OUTER JOIN ORCT T7
 --Para probar en el query manager de SAP B1, remover el DO BEGIN y el END.
 --COMIENZO Ejemplo para QueryManager
---	DECLARE CUSTOMER NVARCHAR(15);
---	DECLARE CLI_O_PROV    int;
---	CUSTOMER = 'C30550815997';
---		select case when "CardType" = 'C' then 1 
---					when "CardType" = 'S' then -1 
---					when "CardType" = 'L' then 0
---					end into CLI_O_PROV 
---			from OCRD where "CardCode" = CUSTOMER;
---	select CLI_O_PROV from dummy;
+-- DECLARE CUSTOMER NVARCHAR(15);
+-- DECLARE CLI_O_PROV    int;
+-- CUSTOMER = 'C30550815997';
+-- select case when "CardType" = 'C' then 1
+-- when "CardType" = 'S' then -1
+-- when "CardType" = 'L' then 0
+-- end into CLI_O_PROV
+-- from OCRD where "CardCode" = CUSTOMER;
+-- select CLI_O_PROV from dummy;
 --CUIDADO EL QUERY MANAGER DEVUELVE EL PRIMER RESULSET!!!
---	B = SELECT * FROM OINV;
---	select top 1 * from :B;
+-- B = SELECT * FROM OINV;
+-- select top 1 * from :B;
 --FIN Ejemplo para QueryManager
 END;
