@@ -1,3 +1,8 @@
+-- Aqui uso group expresion encerrada entre parentesis y le digo que del grupo 1 encuentre la primer, segunda o n-esima ocurrencia
+select 'Group 1 Occurrence 1', substr_regexpr('<CardCode>(.+?)<\/CardCode>' in (select top 10 "CardCode" from OINV for xml)  OCCURRENCE 1 GROUP 1) from dummy;
+select 'Group 1 Occurrence 2', substr_regexpr('<CardCode>(.+?)<\/CardCode>' in (select top 10 "CardCode" from OINV for xml) OCCURRENCE 2 GROUP 1 ) from dummy;
+
+
 set schema SBODEMOAR;
 --delete from "SB1OBJECTLOG";
 select * from "SB1OBJECTLOG" order by "Sequence" desc;
