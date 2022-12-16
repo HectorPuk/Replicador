@@ -25,3 +25,6 @@ begin
 select * from FAFA();
 end;
 
+CREATE VIEW ATP3 AS select * from FAFA();
+
+select * from ATP3;
