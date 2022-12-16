@@ -1,0 +1,1 @@
+--https://help.sap.com/docs/SAP_HANA_PLATFORM/de2486ee947e43e684d39702027f8a94/6f1260eff10a4ba7a159b44848b16ab4.html?q=anonymous%20functions
