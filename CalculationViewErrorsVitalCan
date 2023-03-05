@@ -32,8 +32,15 @@ service  {
    key  ("BlogId")                             // Optional key relevant for view
  Aca mechillo porque no tenia Key
 
+
 ;
 }  
+
+
+https://192.168.1.227:4300/VitalCan/2/VitalCan.xsodata/OINV(10)?$format=json
+asi puedo llamar un OData expuesto como servicio OINV.
+https://192.168.1.227:4300/VitalCan/2/Sabio.xsodata/MyView(2)?$format=json
+asi como el expuesto MyView.
 
 
 
