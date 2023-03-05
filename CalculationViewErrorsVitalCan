@@ -13,3 +13,27 @@ CREATE PROCEDURE GETQUERYGROUP
 )
 LANGUAGE SQLSCRIPT
 READS SQL DATA
+
+Un poco de mago cacarulo.
+Para el xsodata use esta definicion para exponer la calculation view.
+
+// To define an XS OData service, you can use the following syntax.
+// In the example below Aggregation, Modification and Association are defined.
+
+service  { 
+
+// Aggregation example: A view with ID Amount, Month, and Year columns created in sample.test package.
+// Call http://host:port/package/file.xsodata/MyView?$select=Year,Amount
+
+   "VitalCan.2::Sabio" FIJATE ACA QUE EL PATH SE DEFINE CON PUNTOS y a partir de los dos puntos va la calc view. "Sabio" expone una tabla del schema DEMO.
+   
+//   "sample.test::my_view"                  // Table or View  
+   as "MyView"                             // Optional entity alias     
+   key  ("BlogId")                             // Optional key relevant for view
+ Aca mechillo porque no tenia Key
+
+;
+}  
+
+
+
