@@ -1,3 +1,15 @@
 https://answers.sap.com/questions/360149/prevent-error-activating-calculated-view-in-new-sc.html
 Con un grant similar me dejo activar las calculation view...
 GRANT SELECT ON SCHEMA NEWDATABASE TO _SYS_REPO WITH GRANT OPTION;
+Tuve que hacer esto para que me aceptara un call en el SqlScript
+GRANT EXECUTE ON SCHEMA "TETSCHIQUIRO" TO _SYS_REPO WITH GRANT OPTION;
+
+Mira aca abajo donde tuve que modificar el create procedure para porque si no la SQL View no lo aceptaba. Tiene que ser READ ONLY lo que viaja en una Sql View.
+
+CREATE PROCEDURE GETQUERYGROUP
+(
+	in ItemCode nvarchar(50),
+	out QryGroups table ("QryGroupEntry" INT)
+)
+LANGUAGE SQLSCRIPT
+READS SQL DATA
