@@ -1,1 +1,3 @@
 https://answers.sap.com/questions/360149/prevent-error-activating-calculated-view-in-new-sc.html
+Con un grant similar me dejo activar las calculation view...
+GRANT SELECT ON SCHEMA NEWDATABASE TO _SYS_REPO WITH GRANT OPTION;
