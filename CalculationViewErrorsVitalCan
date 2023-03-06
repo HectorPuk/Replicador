@@ -44,6 +44,8 @@ asi como el expuesto MyView.
 
 MIRA ESTO EN LA SALIDA XML!!!!
 select * from ORDR where "DocNum" = 155 for XML ('format' =  'no')
+Una explicacion del for XML
+https://www.kodyaz.com/sap-abap/export-table-as-xml-into-string-variable-in-sap-hana-database-using-sqlscript.aspx
 
 
 
