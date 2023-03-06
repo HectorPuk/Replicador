@@ -42,5 +42,8 @@ asi puedo llamar un OData expuesto como servicio OINV.
 https://192.168.1.227:4300/VitalCan/2/Sabio.xsodata/MyView(2)?$format=json
 asi como el expuesto MyView.
 
+MIRA ESTO EN LA SALIDA XML!!!!
+select * from ORDR where "DocNum" = 155 for XML ('format' =  'no')
+
 
 
