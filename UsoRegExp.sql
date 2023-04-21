@@ -1,3 +1,6 @@
+Usar REGEXPR en Where
+select * from (select 'MAN U' as "CardName" from dummy) where "CardName" like_regexpr 'M.N' FLAG 'i'
+
 --Con REGEXPR tenes 4 funciones. LOCATE (devuelve posicion), SUBSTR devuelve la string, OCCURENCES cuenta las ocurrencias y REPLACE cambia algo en la string
 -- Aqui uso group expresion encerrada entre parentesis y le digo que del grupo 1 encuentre la primer, segunda o n-esima ocurrencia
 select 'Group 1 Occurrence 1', substr_regexpr('<CardCode>(.+?)<\/CardCode>' in (select top 10 "CardCode" from OINV for xml)  OCCURRENCE 1 GROUP 1) from dummy;
