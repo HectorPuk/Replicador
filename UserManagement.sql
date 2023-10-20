@@ -19,7 +19,13 @@ GRANT
 	TO SBO WITH ADMIN OPTION;
 GRANT CREATE ANY, SELECT ON SCHEMA SYSTEM TO SBO;
 GRANT SELECT, EXECUTE, DELETE ON SCHEMA _SYS_REPO TO SBO;
-
+/*
+The SBOCOMMON schema is created during the installation of SAP Business One Server, and the COMMON schema is
+created during the installation of the analytics platform. If you use different SAP HANA users for installing
+different components, you must pay special attention to grant the following object privileges, as appropriate:
+SBOCOMMON schema: SELECT, INSERT, DELETE, UPDATE, EXECUTE, CREATE ANY, DROP (all grantable)
+COMMON schema: SELECT, INSERT, DELETE, UPDATE, EXECUTE (all grantable)
+*/
 
 
 --Crea un usuario basico para que pueda correr un Crystal
