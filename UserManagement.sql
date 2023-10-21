@@ -47,6 +47,10 @@ Pruebo con
 --en la siguiente URL explica lo que paso en el command line y cosas por ejemplo como indicarle si autostart durante la instalacion.
 https://help.sap.com/docs/SAP_HANA_PLATFORM/2c1988d620e04368aa4103bf26f17727/1dbba6ac03054d7eb07c819aae47d095.html#loio7087da9be88f4ed09fee09f1f70f3a05
 
+Cree el usuario SBO y instalo sap B1.
+
+GRANT ALL PRIVILEGES ON SCHEMA SBODEMOAR TO SBO;
+
 */
 
 --Crea un usuario basico para que pueda correr un Crystal
