@@ -20,7 +20,12 @@ GRANT
 GRANT CREATE ANY, SELECT ON SCHEMA SYSTEM TO SBO;
 GRANT SELECT, EXECUTE, DELETE ON SCHEMA _SYS_REPO TO SBO;
 /*
+mkdir /tmp/exports
  mount -t nfs 192.168.1.231:/2TB /tmp/exports
+ cd /tmp/exports/SAMBA2TB/HANALCM/SAP_HANA_DATABASE
+ 
+ ./hdblcm --action=install --sid=NDB --components=all --sapadm_password=Kaiser$641 --password=Kaiser$641 --system_user_password=Kaiser$641 --batch
+ 
 
 The SBOCOMMON schema is created during the installation of SAP Business One Server, and the COMMON schema is
 created during the installation of the analytics platform. If you use different SAP HANA users for installing
