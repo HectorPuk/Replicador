@@ -35,6 +35,11 @@ COMMON schema: SELECT, INSERT, DELETE, UPDATE, EXECUTE (all grantable)
 
 OJO TUVE PROBLEMA POR NO ESCAPAR LOS $
 
+Me tiro en la segunda corrida que no puede usar la password para el SAP Agent supongo que es porque el hdbunist no lo desinstala 
+ver nota https://me.sap.com/notes/0002512232
+Segun la nota en linux con  passwd sapadm es suficiente
+
+
 Pruebo con 
  ./hdblcm --action=install --sid=NDB --components=all --sapadm_password=Kaiser\$641 --password=Kaiser\$641 --system_user_password=Kaiser\$641 --batch
 
