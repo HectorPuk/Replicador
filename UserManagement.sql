@@ -20,6 +20,8 @@ GRANT
 GRANT CREATE ANY, SELECT ON SCHEMA SYSTEM TO SBO;
 GRANT SELECT, EXECUTE, DELETE ON SCHEMA _SYS_REPO TO SBO;
 /*
+ mount -t nfs 192.168.1.231:/2TB /tmp/exports
+
 The SBOCOMMON schema is created during the installation of SAP Business One Server, and the COMMON schema is
 created during the installation of the analytics platform. If you use different SAP HANA users for installing
 different components, you must pay special attention to grant the following object privileges, as appropriate:
