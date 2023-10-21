@@ -33,6 +33,12 @@ COMMON schema: SELECT, INSERT, DELETE, UPDATE, EXECUTE (all grantable)
 
  ./hdblcm --action=install --sid=NDB --components=all --sapadm_password=Kaiser$641 --password=Kaiser$641 --system_user_password=Kaiser$641 --batch
 
+OJO TUVE PROBLEMA POR NO ESCAPAR LOS $
+
+Pruebo con 
+ ./hdblcm --action=install --sid=NDB --components=all --sapadm_password=Kaiser\$641 --password=Kaiser\$641 --system_user_password=Kaiser\$641 --batch
+
+
 --en la siguiente URL explica lo que paso en el command line y cosas por ejemplo como indicarle si autostart durante la instalacion.
 https://help.sap.com/docs/SAP_HANA_PLATFORM/2c1988d620e04368aa4103bf26f17727/1dbba6ac03054d7eb07c819aae47d095.html#loio7087da9be88f4ed09fee09f1f70f3a05
 
