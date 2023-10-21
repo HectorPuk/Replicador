@@ -58,6 +58,7 @@ Validos - Start/Restart/STOP
 systemctl restart b1s
 systemctl restart sldagent.service
 systemctl stop sapb1servertools.service
+systemctl stop b1s
 
 ?? systemctl stop apparmor.service
 
