@@ -24,16 +24,19 @@ mkdir /tmp/exports
  mount -t nfs 192.168.1.231:/2TB /tmp/exports
  cd /tmp/exports/SAMBA2TB/HANALCM/SAP_HANA_DATABASE
  
- ./hdblcm --action=install --sid=NDB --components=all --sapadm_password=Kaiser$641 --password=Kaiser$641 --system_user_password=Kaiser$641 --batch
- 
 
 The SBOCOMMON schema is created during the installation of SAP Business One Server, and the COMMON schema is
 created during the installation of the analytics platform. If you use different SAP HANA users for installing
 different components, you must pay special attention to grant the following object privileges, as appropriate:
 SBOCOMMON schema: SELECT, INSERT, DELETE, UPDATE, EXECUTE, CREATE ANY, DROP (all grantable)
 COMMON schema: SELECT, INSERT, DELETE, UPDATE, EXECUTE (all grantable)
-*/
 
+ ./hdblcm --action=install --sid=NDB --components=all --sapadm_password=Kaiser$641 --password=Kaiser$641 --system_user_password=Kaiser$641 --batch
+
+--en la siguiente URL explica lo que paso en el command line y cosas por ejemplo como indicarle si autostart durante la instalacion.
+https://help.sap.com/docs/SAP_HANA_PLATFORM/2c1988d620e04368aa4103bf26f17727/1dbba6ac03054d7eb07c819aae47d095.html#loio7087da9be88f4ed09fee09f1f70f3a05
+
+*/
 
 --Crea un usuario basico para que pueda correr un Crystal
 
