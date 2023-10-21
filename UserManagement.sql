@@ -50,6 +50,16 @@ https://help.sap.com/docs/SAP_HANA_PLATFORM/2c1988d620e04368aa4103bf26f17727/1db
 Cree el usuario SBO y instalo sap B1.
 
 GRANT ALL PRIVILEGES ON SCHEMA SBODEMOAR TO SBO;
+Esto de arriba parece no tener sentido, el lugar de hacer el import con SYSTEM y grantear a SBO, 
+HACER EL IMPORT CON SBO!!!!
+
+Validos - Start/Restart/STOP
+
+systemctl restart b1s
+systemctl restart sldagent.service
+systemctl stop sapb1servertools.service
+
+?? systemctl stop apparmor.service
 
 */
 
