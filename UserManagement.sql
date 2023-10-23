@@ -62,7 +62,14 @@ systemctl stop b1s
 
 ?? systemctl stop apparmor.service
 
+/*
+
+./sysbench cpu run --threads=12 --time=300
+Time in sec.
+https://www.alibabacloud.com/blog/testing-io-performance-with-sysbench_594709
+
 */
+
 
 --Crea un usuario basico para que pueda correr un Crystal
 
