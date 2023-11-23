@@ -2,6 +2,18 @@ systemctl stop sapb1servertools.service sapb1servertools-authentication.service 
 
 ssh root@192.168.1.220 'runuser -l ndbadm -c ''/tmp/HDBdown.sh'' && poweroff '
 
+::::::::::::::
+HDBdown.sh
+::::::::::::::
+#!/usr/bin/env bash
+HDB stop
+
+::::::::::::::
+HDBstart.sh
+::::::::::::::
+#!/usr/bin/env bash
+HDB start
+
 
 -rw-r--r-- 1 root root  143 Oct 20 22:05 SAP.slice
 lrwxrwxrwx 1 root root   46 Oct 20 23:12 authentication.service -> /usr/lib/systemd/system/authentication.service
