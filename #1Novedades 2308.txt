@@ -1,0 +1,41 @@
+systemctl stop sapb1servertools.service sapb1servertools-authentication.service sldagent.service b1s.service webclient.service authentication.service gateway.service sapb1edfbackend.service
+
+ssh root@192.168.1.220 'runuser -l ndbadm -c ''/tmp/HDBdown.sh'' && poweroff '
+
+
+-rw-r--r-- 1 root root  143 Oct 20 22:05 SAP.slice
+lrwxrwxrwx 1 root root   46 Oct 20 23:12 authentication.service -> /usr/lib/systemd/system/authentication.service
+lrwxrwxrwx 1 root root   40 Oct 20 23:09 b1s.service -> /usr/lib/systemd/system/b1s50000.service
+lrwxrwxrwx 1 root root   40 Oct 20 23:09 b1s50001.service -> /usr/lib/systemd/system/b1s50001.service
+lrwxrwxrwx 1 root root   40 Oct 20 23:09 b1s50002.service -> /usr/lib/systemd/system/b1s50002.service
+lrwxrwxrwx 1 root root   40 Oct 20 23:09 b1s50003.service -> /usr/lib/systemd/system/b1s50003.service
+lrwxrwxrwx 1 root root   40 Oct 20 23:09 b1s50004.service -> /usr/lib/systemd/system/b1s50004.service
+drwxr-xr-x 1 root root   24 Oct 29  2020 basic.target.wants
+drwxr-xr-x 1 root root   34 Oct 29  2020 bluetooth.target.wants
+lrwxrwxrwx 1 root root   36 Oct 29  2020 bootmsg.service -> /usr/lib/systemd/system/klog.service
+lrwxrwxrwx 1 root root   41 Oct 29  2020 dbus-org.bluez.service -> /usr/lib/systemd/system/bluetooth.service
+lrwxrwxrwx 1 root root   45 Oct 29  2020 dbus-org.opensuse.Network.AUTO4.service -> /usr/lib/systemd/system/wickedd-auto4.service
+lrwxrwxrwx 1 root root   45 Oct 29  2020 dbus-org.opensuse.Network.DHCP4.service -> /usr/lib/systemd/system/wickedd-dhcp4.service
+lrwxrwxrwx 1 root root   45 Oct 29  2020 dbus-org.opensuse.Network.DHCP6.service -> /usr/lib/systemd/system/wickedd-dhcp6.service
+lrwxrwxrwx 1 root root   45 Oct 29  2020 dbus-org.opensuse.Network.Nanny.service -> /usr/lib/systemd/system/wickedd-nanny.service
+drwxr-xr-x 1 root root  234 Oct 29  2020 default.target.wants
+lrwxrwxrwx 1 root root   39 Oct 20 23:12 gateway.service -> /usr/lib/systemd/system/gateway.service
+drwxr-xr-x 1 root root   36 Oct 29  2020 getty.target.wants
+drwxr-xr-x 1 root root   46 Oct 29  2020 graphical.target.wants
+drwxr-xr-x 1 root root  128 Oct 29  2020 mdmonitor.service.wants
+drwxr-xr-x 1 root root 1128 Oct 20 23:12 multi-user.target.wants
+drwxr-xr-x 1 root root   28 Oct 29  2020 network-online.target.wants
+lrwxrwxrwx 1 root root   38 Oct 29  2020 network.service -> /usr/lib/systemd/system/wicked.service
+drwxr-xr-x 1 root root   26 Oct 29  2020 remote-fs.target.wants
+lrwxrwxrwx 1 root root   47 Oct 20 23:12 sapb1edfbackend.service -> /usr/lib/systemd/system/sapb1edfbackend.service
+lrwxrwxrwx 1 root root   63 Oct 20 22:48 sapb1servertools-authentication.service -> /usr/lib/systemd/system/sapb1servertools-authentication.service
+lrwxrwxrwx 1 root root   48 Oct 20 22:48 sapb1servertools.service -> /usr/lib/systemd/system/sapb1servertools.service
+-rw-r--r-- 1 root root  505 Oct 20 22:05 saphostagent.service
+lrwxrwxrwx 1 root root   40 Oct 20 22:53 sldagent.service -> /usr/lib/systemd/system/sldagent.service
+drwxr-xr-x 1 root root  104 Oct 30 04:56 sockets.target.wants
+drwxr-xr-x 1 root root  110 Oct 29  2020 sysinit.target.wants
+lrwxrwxrwx 1 root root   39 Oct 29  2020 syslog.service -> /usr/lib/systemd/system/rsyslog.service
+drwxr-xr-x 1 root root  280 Oct 29  2020 timers.target.wants
+drwxr-xr-x 1 root root   30 Oct 20 22:40 vmtoolsd.service.requires
+lrwxrwxrwx 1 root root   41 Oct 20 23:11 webclient.service -> /usr/lib/systemd/system/webclient.service
+lrwxrwxrwx 1 root root   47 Oct 29  2020 xdm.service -> /usr/lib/systemd/system/display-manager.service
