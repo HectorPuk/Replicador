@@ -51,6 +51,9 @@ SBOCOMMON schema: SELECT, INSERT, DELETE, UPDATE, EXECUTE, CREATE ANY, DROP (all
 COMMON schema: SELECT, INSERT, DELETE, UPDATE, EXECUTE (all grantable)
 
  ./hdblcm --action=install --sid=NDB --components=all --sapadm_password=Kaiser$641 --password=Kaiser$641 --system_user_password=Kaiser$641 --batch
+ 
+ PARA 2208!!!
+ ./hdblcm --action=install --sid=NDB --components=all --sapadm_password=Kaiser641 --password=Kaiser641 --system_user_password=Kaiser641 --batch
 
 OJO TUVE PROBLEMA POR NO ESCAPAR LOS $
 
