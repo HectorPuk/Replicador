@@ -30,3 +30,16 @@ select count(*)  from OCRD where "CardCode" =  'COCA';
 select * from OCRB;
 select * from OCMH;
 
+PARA BACKDAL
+
+select SUBSTR_REGEXPR( 'Code:([[:digit:]]{2}) Vendor:'in "campo" group 1) from 
+(select 'Code:22 Vendor:Pirulo' "campo" from dummy
+union all
+select 'Code:12 Vendor:Kuke' "campo" from dummy
+union all
+select 'Code:13 Vendor:Nube Negra' "campo" from dummy
+);
+
+SELECT SUBSTR_REGEXPR('([[:digit:]]{4})([[:digit:]]{2})([[:digit:]]{2})' IN '20140401' GROUP 3) "substring_regexpr" FROM DUMMY;
+
+
