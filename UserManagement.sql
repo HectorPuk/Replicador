@@ -39,6 +39,26 @@ GRANT
 GRANT CREATE ANY, SELECT ON SCHEMA SYSTEM TO SBO;
 GRANT SELECT, EXECUTE, DELETE ON SCHEMA _SYS_REPO TO SBO;
 /*
+BACKUPS DEL ORTO
+
+RECOVER DATA  USING FILE ('/tmp/exports/SAMBA2TB/BackupIVANA/COMPLETESYSTEMDB20231121125501')  CLEAR LOG
+
+RECOVER DATA FOR NDB  USING FILE ('/tmp/exports/SAMBA2TB/BackupIVANA/COMPLETENDB20231121125901')  CLEAR LOG
+Si trato de ejecutar el recover de NDB me pide que detenga la base con el Alter de abajo. Esto es un avance frente a las pelotudces que me venia enfrentando.
+ALTER SYSTEM START/STOP DATABASE Statement (Tenant Database Management)
+
+Esto lo que trata de hacer es recuperar el SYSTEMDB al ultimo estado disponible.
+
+HDBSettings.sh recoverSys.py 
+
+--TENANT
+CREATE DATABASE TESTDB SYSTEM USER PASSWORD Initial1;
+
+--TENANT
+
+
+
+
 mkdir /tmp/exports
  mount -t nfs 192.168.1.231:/2TB /tmp/exports
  cd /tmp/exports/SAMBA2TB/HANALCM/SAP_HANA_DATABASE
@@ -65,6 +85,7 @@ Segun la nota en linux con  passwd sapadm es suficiente
 Pruebo con 
  ./hdblcm --action=install --sid=NDB --components=all --sapadm_password=Kaiser\$641 --password=Kaiser\$641 --system_user_password=Kaiser\$641 --batch
 
+ ./hdblcm --action=install --sid=NDB --components=all --sapadm_password=Ivana\$641 --password=Ivana\$641 --system_user_password=Ivana\$641 --batch
 
 --en la siguiente URL explica lo que paso en el command line y cosas por ejemplo como indicarle si autostart durante la instalacion.
 https://help.sap.com/docs/SAP_HANA_PLATFORM/2c1988d620e04368aa4103bf26f17727/1dbba6ac03054d7eb07c819aae47d095.html#loio7087da9be88f4ed09fee09f1f70f3a05
