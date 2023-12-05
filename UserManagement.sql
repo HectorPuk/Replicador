@@ -51,6 +51,36 @@ Esto lo que trata de hacer es recuperar el SYSTEMDB al ultimo estado disponible.
 
 HDBSettings.sh recoverSys.py 
 
+--RECOVER POINT IN TIME
+
+Fijate que los backup y log los deje en folders separados.
+
+RECOVER DATABASE FOR NDB 
+UNTIL TIMESTAMP '2023-12-05 05:00:00' 
+CLEAR LOG 
+USING LOG PATH ('/usr/sap/NDB/HDB00/backup/log/DB_NDB/old') 
+USING DATA PATH ('/usr/sap/NDB/HDB00/backup/data/DB_NDB/old/') 
+USING BACKUP_ID 1701749020083; 
+
+IMPORTANTE!!!!
+
+RECOVER DATABASE FOR NDB 
+--Use dos horarios para ver que los BP creados mas tarde no aparecian cuando hacya in REPLAY hasta cierta hora....
+--UNTIL TIMESTAMP '2023-12-05 11:00:00' 
+UNTIL TIMESTAMP '2023-12-05 5:00:00' 
+CLEAR LOG 
+--si no le digo donde esta el catalogo trata de usar el catalogo que ya tiene en la base.
+USING CATALOG PATH ('/usr/sap/NDB/HDB00/backup/log/DB_NDB/old')
+USING LOG PATH ('/usr/sap/NDB/HDB00/backup/log/DB_NDB/old') 
+USING DATA PATH ('/usr/sap/NDB/HDB00/backup/data/DB_NDB/old/') 
+USING BACKUP_ID 1701749020083; 
+
+
+
+--RECOVER POINT IN TIME
+
+
+
 --TENANT
 CREATE DATABASE TESTDB SYSTEM USER PASSWORD Initial1;
 
