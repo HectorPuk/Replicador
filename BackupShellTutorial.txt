@@ -1,0 +1,25 @@
+La opcion -cl solo te devuelve la lista de los backups que existen.
+Esto funciona borrando
+./backup.sh --config-file=backup_config.cfg -cd --backup-id=1702004431584
+lista
+./backup.sh --config-file=backup_config.cfg -ld
+
+Comprobado, pero DEBE cambiar el dia, si haces 30 backups el mismo dia, el script no depura....OJO
+
+/usr/sap/HDB/home/scripts/backup.sh --config-file=/usr/sap/HDB/home/scripts/backup_config_HDB00.cfg -q -p --retention=3
+Esto le dice que solo grabe backups con sufijo 0, 1, 2. Si hoy le toca el 0 y lo repetis 80 veces siempre va a ser el mismo file
+Aca NO SE BORRA SE BORRA EN LA PROXIMA EJECUCION CON LOS SIGUIENTE PARAMETROS
+
+/usr/sap/HDB/home/scripts/backup.sh --config-file=/usr/sap/HDB/home/scripts/backup_config_HDB00.cfg --retention=3 -cd -od -cl
+
+manteniendo el esquema de retencion, -cd borrar data -cl borra log -od desde el mas viejo borrado...
+
+hdbbackupdiag --check -f -v -d /usr/sap/NDB/HDB00/backup/log/DB_NDB
+
+Recorda que tenes un SAR que armanste 
+
+https://help.sap.com/docs/SAP_HANA_ONE/1c837b3899834ddcbae140cc3e7c7bdd/77522ef1e3cb4d799bab33e0aeb9c93b.html#loio86756bf305b944c3b0695623539909a8
+
+In the SAP HANA installation, create an archive with the required files: hdbbackupcheckpack <archive>
+
+Recorda que lo llevaste a un ubuntu y lo hiciste funcionar.
