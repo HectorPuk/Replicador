@@ -1,0 +1,22 @@
+install -i silent -f <Property File Path> [--debug]
+
+Tengo que confirmar pero, para desinstalar tengo que parar todos los servicios (dejando HANA levantado)
+
+
+/tmp/exports/SAMBA2TB/SAPB1HANA10PL12_FP2308-Ivana-Trial/Packages.Linux/ServerComponents/install -i silent -f /tmp/exports/SAMBA2TB/SBO102308Unattended/una0 --debug
+
+/tmp/exports/SAMBA2TB/SBO102308Unattended
+
+acordarse que hace falta jq, xmlstarlet libcap-progs libicu
+
+tenes que asegurar que SAP HANA este arriba para instalar
+
+Tenes que asegurar que el usuario SBO fue creado antes de instalar...
+
+#0 Cambiar de disco de instalacion imange a disco 1 de SuSE 15 SP2.
+#1 Ir a Yast y agregar el DVD como repositorio
+#2 Ir a software management y decirle que instale lo que te pide.
+zypper install libicu60_2
+zypper install xmlstarlet
+zypper install jq
+zypper install libcap-progs

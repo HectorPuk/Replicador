@@ -91,7 +91,9 @@ CREATE DATABASE TESTDB SYSTEM USER PASSWORD Initial1;
 
 mkdir /tmp/exports
  mount -t nfs 192.168.1.231:/2TB /tmp/exports
- cd /tmp/exports/SAMBA2TB/HANALCM/SAP_HANA_DATABASE
+ cd /tmp/exports/SAMBA2TB/HANALCM2308PL12/SAP_HANA_DATABASE
+ 
+ cd /tmp/exports/SAMBA2TB/HANALCM2208PL09/SAP_HANA_DATABASE
  
 
 The SBOCOMMON schema is created during the installation of SAP Business One Server, and the COMMON schema is
@@ -113,7 +115,7 @@ Segun la nota en linux con  passwd sapadm es suficiente
 
 
 Pruebo con 
- ./hdblcm --action=install --sid=NDB --components=all --sapadm_password=Kaiser\$641 --password=Kaiser\$641 --system_user_password=Kaiser\$641 --batch
+ /tmp/exports/SAMBA2TB/HANALCM2308PL12/SAP_HANA_DATABASE/hdblcm --action=install --sid=NDB --components=all --sapadm_password=Kaiser\$641 --password=Kaiser\$641 --system_user_password=Kaiser\$641 --batch --autostart=1
 
  ./hdblcm --action=install --sid=NDB --components=all --sapadm_password=Ivana\$641 --password=Ivana\$641 --system_user_password=Ivana\$641 --batch
 

@@ -23,3 +23,11 @@ https://help.sap.com/docs/SAP_HANA_ONE/1c837b3899834ddcbae140cc3e7c7bdd/77522ef1
 In the SAP HANA installation, create an archive with the required files: hdbbackupcheckpack <archive>
 
 Recorda que lo llevaste a un ubuntu y lo hiciste funcionar.
+
+  437  ./hdbbackupcheck /tmp/exports/SAMBA2TB/BackupIVANA/COMPLETENDB20231121125901_databackup_0_1
+  438  ./hdbbackupcheck /tmp/exports/SAMBA2TB/BackupIVANA/COMPLETENDB20231121125901_databackup_2_1
+  439  ./hdbbackupcheck /tmp/exports/SAMBA2TB/BackupIVANA/COMPLETENDB20231121125901_databackup_3_1
+  
+  hdbbackupdiag chequea que los archivos esten disponibles, pero NO chequea integridad a fondo. Que lo hace el hdbbackupcheck
+  
+  
