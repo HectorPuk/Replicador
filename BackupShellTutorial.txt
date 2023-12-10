@@ -30,4 +30,42 @@ Recorda que lo llevaste a un ubuntu y lo hiciste funcionar.
   
   hdbbackupdiag chequea que los archivos esten disponibles, pero NO chequea integridad a fondo. Que lo hace el hdbbackupcheck
   
+select * from M_BACKUP_CATALOG where ENTRY_TYPE_NAME ='complete data backup' and STATE_NAME = 'successful' order by UTC_END_TIME desc;
+select F.* from M_BACKUP_CATALOG C join M_BACKUP_CATALOG_FILES F on F.ENTRY_ID = C.ENTRY_ID where C.ENTRY_TYPE_NAME ='complete data backup' and C.STATE_NAME = 'successful' order by C.UTC_END_TIME desc;
+
+ Experiencias son experiencias....
+
+Lo primer busca un catalogo, pero como lo copie despues de haber hecho un backup, el catalogo mas nuevo se corresponde con un backup mas nuevo....
+Un detalle, al copiarlo pierde la fecha de creacion... CUAC!
+Para ser mas exacto, al subirlo via SFTP.....
+
+
+
+hdbbackupdiag --check -f -v -d /tmp/exports/SAMBA2TB/BackupIVANA
+found backup catalog 1702242000585 from file /tmp/exports/SAMBA2TB/BackupIVANA/log_backup_0_0_0_0.1702242000585
+using backup catalog 1702242000585 from file /tmp/exports/SAMBA2TB/BackupIVANA/log_backup_0_0_0_0.1702242000585
+ERROR: [111119] file '/backup/HANABACKUPS/DB_NDB/COMPLETE_DB_NDB_20231210171532_databackup_0_1' not found 
   
+
+-rw-r----- 1 ndbadm sapsys 732K Dec 10 15:15 /usr/sap/NDB/HDB00/backup/log/DB_NDB/log_backup_0_0_0_0.1702232123041
+-rw-r----- 1 ndbadm sapsys 732K Dec 10 15:30 /usr/sap/NDB/HDB00/backup/log/DB_NDB/log_backup_0_0_0_0.1702233004969
+-rw-r----- 1 ndbadm sapsys 732K Dec 10 15:30 /usr/sap/NDB/HDB00/backup/log/DB_NDB/log_backup_0_0_0_0.1702233016144
+
+Dato recontraretorcido, tome el ultimo log backup antes del proximo backup.
+Ponele tenia un backup de las 15 hs y otro de las 17hs
+Busque en el catalogo cual era el ultimo log backup
+
+y la liena de comando es:
+
+
+
+OJO CON LO PROXIMO
+RECOVER DATA FOR NDB USING BACKUP_ID 1702231796089 USING CATALOG PATH ('/tmp/exports/SAMBA2TB/BackupIVANA') USING DATA PATH ('/tmp/exports/SAMBA2TB/BackupIVANA/')  CLEAR LOG
+
+hdbbackupdiag --check -f -v --logDirs /tmp/exports/SAMBA2TB/BackupIVANA/ --dataDir  /tmp/exports/SAMBA2TB/BackupIVANA/
+
+
+Ok found out, there are configuration settings available through which it can be turned off.
+alter system alter configuration ('indexserver.ini', 'system') set ('sqlscript', 'dynamic_sql_ses_ctrl_error_level') = 'silent' with reconfigure
+Also, note the above option is NOT available in HANA Studio API, it has to be disabled using command only.
+

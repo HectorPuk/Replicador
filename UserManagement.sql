@@ -13,11 +13,21 @@ GRANT
 	BACKUP OPERATOR
 	TO BACKUPER WITH ADMIN OPTION;
 
+GRANT DATABASE BACKUP ADMIN TO BACKUPER; 
+
+Ojo que por la siguiente linea me volvi loco buscando y el grant es como esta en la linea superior....
 
 FOR NDB DATABASE BACKUP ADMIN or DATABASE ADMIN
 
 
 --CREA USUARIO PARA INSTALAR SBO
+/*
+OJOOOOOO!!!!!!!!!!!!!!!!!!!!!!!!!
+
+Passwords containing special characters other than underscore must be en­closed in double quotes ("). The SAP HANA studio does this automatically.
+When a password is enclosed in double quotes ("), any Unicode characters can be used.
+
+*/ 
 
 CREATE USER SBO PASSWORD Kaiser$641 NO FORCE_FIRST_PASSWORD_CHANGE;
 ALTER USER SBO DISABLE PASSWORD LIFETIME;
