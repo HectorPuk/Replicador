@@ -1,3 +1,6 @@
+
+
+
 systemctl stop sapb1servertools.service sapb1servertools-authentication.service sldagent.service b1s.service webclient.service authentication.service gateway.service sapb1edfbackend.service
 
 
@@ -9,9 +12,12 @@ ssh root@192.168.1.220 'runuser -l ndbadm -c ''/tmp/HDBdown.sh'' && poweroff '
 ::::::::::::::
 HDBdown.sh
 ::::::::::::::
+
 #!/usr/bin/env bash
 HDB stop
 
+#Lee mas aca sobre el ENV que pones arriba del bash
+https://stackoverflow.com/questions/43793040/how-does-usr-bin-env-work-in-a-linux-shebang-line
 ::::::::::::::
 HDBstart.sh
 ::::::::::::::

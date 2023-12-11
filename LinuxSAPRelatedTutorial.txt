@@ -1,0 +1,31 @@
+visudo para editar el archivo /etc/sudoers
+
+Puedo hacer que no le pida password para un usuario o un comando especifico.
+
+b1service0 ALL=(ALL) NOPASSWD:/bin/mount
+hector ALL=(ALL) NOPASSWD: ALL
+b1service0 ALL=(ALL) NOPASSWD:/bin/umount
+b1service0 ALL=(ALL) NOPASSWD:/bin/mkdir
+
+PROBLEMAS CON el sudo -u ndbadm bash.
+COMO ESTOY PARADO EN ROOT me falla porque el script hdbenv.sh trata de hacer in find desde el folder que esta parado. 
+Como esta en root no tiene autoridad.
+
+VER ESTA PISTA !!!!!
+
+hanabone:~ # sudo -u ndbadm bash
+/usr/sap/NDB/SYS/profile/NDB_HDB00_hanabone
+find: Failed to restore initial working directory: /root: Permission denied
+0 hanabone NDB
+hdbenv.sh: Error: Instance not found for host hanabone
+hanabone:ndbadm> pwd
+/usr/sap/NDB/HDB00
+hanabone:ndbadm> exit
+exit
+hanabone:~ # pwd
+
+
+#!/bin/bash
+source  ~/.bashrc
+HDB info
+#hdbbackupdiag --check -f -v --logDirs /tmp/exports/SAMBA2TB/BackupIVANA/ --dataDir  /tmp/exports/SAMBA2TB/BackupIVANA/

@@ -69,3 +69,6 @@ Ok found out, there are configuration settings available through which it can be
 alter system alter configuration ('indexserver.ini', 'system') set ('sqlscript', 'dynamic_sql_ses_ctrl_error_level') = 'silent' with reconfigure
 Also, note the above option is NOT available in HANA Studio API, it has to be disabled using command only.
 
+/hana/shared/NDB/exe/linuxx86_64/HDB_2.00.059.09.1686579463_906e8ded4f4bb4e786859cf40ebdf2c669fe4f59/hdbbackupdiag
+echo $LD_LIBRARY_PATH  
+
