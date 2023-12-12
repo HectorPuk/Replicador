@@ -127,6 +127,14 @@ Segun la nota en linux con  passwd sapadm es suficiente
 Pruebo con 
  /tmp/exports/SAMBA2TB/HANALCM2308PL12/SAP_HANA_DATABASE/hdblcm --action=install --sid=NDB --components=all --sapadm_password=Kaiser\$641 --password=Kaiser\$641 --system_user_password=Kaiser\$641 --batch --autostart=1
 
+Pruebo con ignorar maxima memoria
+
+ /tmp/exports/SAMBA2TB/HANALCM2308PL12/SAP_HANA_DATABASE/hdblcm --action=install --sid=NDB --components=all --sapadm_password=Kaiser\$641 --password=Kaiser\$641 --system_user_password=Kaiser\$641 --batch --autostart=1 --ignore=check_min_mem
+
+ACA TENES LAS COMMAND LINE OPTIONS PARA EL HDBLCM!!
+
+https://help.sap.com/docs/SAP_HANA_PLATFORM/2c1988d620e04368aa4103bf26f17727/202717d5c58a4c6cb74d0d8aef4d8efe.html
+
  ./hdblcm --action=install --sid=NDB --components=all --sapadm_password=Ivana\$641 --password=Ivana\$641 --system_user_password=Ivana\$641 --batch
 
 --en la siguiente URL explica lo que paso en el command line y cosas por ejemplo como indicarle si autostart durante la instalacion.
