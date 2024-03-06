@@ -1,3 +1,11 @@
+El RSYNC como mi mejor herramienta y para ESXi tambien
+https://github.com/itiligent/RSYNC-ESXi
+
+Deje el ejecutable en el 242 en el raiz de NVMe
+
+
+
+
 La opcion -cl solo te devuelve la lista de los backups que existen.
 Esto funciona borrando
 ./backup.sh --config-file=backup_config.cfg -cd --backup-id=1702004431584
