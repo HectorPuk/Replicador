@@ -1,0 +1,1 @@
+do  begin declare cantidad integer = 0; declare valor decimal(16,9) = 0; select count(*) into cantidad from ORTT where "RateDate" = add_days(current_date,1) and "Currency" = 'USD'; select "Rate" into valor from ORTT where "RateDate" = add_days(current_date,1) and "Currency" = 'USD';   SELECT '01(01/22' "Date",'USD' "Currency",800 "Value"  from dummy;  end;
