@@ -10,3 +10,6 @@ However, there is some overlap and other extensions are used, so you can’t alw
 
 En el ubuntu tuve que resetear el sshd cambiando la configuracion a "PasswordAuthentication yes" para que me deje entrar desde Filezilla.
 
+Sigo esto para habilitarlo en APACHE WINDOWS.
+https://support.helpspot.com/index.php?pg=kb.page&id=606
+
