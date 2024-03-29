@@ -13,3 +13,11 @@ En el ubuntu tuve que resetear el sshd cambiando la configuracion a "PasswordAut
 Sigo esto para habilitarlo en APACHE WINDOWS.
 https://support.helpspot.com/index.php?pg=kb.page&id=606
 
+En el httpd.conf tuve que poner 
+Listen 0.0.0.0:50090
+Listen 0.0.0.0:50043
+
+httpd-ssl.conf
+
+
+
