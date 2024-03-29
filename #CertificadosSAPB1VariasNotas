@@ -9,3 +9,26 @@ SSL en general?
 https://me.sap.com/notes/2046101
 
 https://me.sap.com/notes/2858000
+
+
+*.PFX or *.P12  -  Personal Information Exchange Format
+
+Supports storage of private and public keys and all certificates in the path. 
+*If you wish to export a certificate and retain full private key functionality you must use the *.PFX or *.P12 extension*
+
+*.CER or *.CRT  -  Base64-encoded or DER-encoded binary X.509 Certificate
+Storage of a single certificate. This format does not support storage of private keys.
+ 
+*.CRL  -  Certificate Revocation List
+Designates a certificate that has been revoked.
+
+*.CSR  -  Certificate Signing Request
+This file type is issued by applications to submit requests to a Certification Authority or CA.
+
+*.DER - DER-encoded binary X.509 Certificate
+Storage of a single certificate. This format does not support storage of private keys.
+
+*.P7B or *.P7R or *.SPC  -  Cryptographic Message Syntax Standard
+Supports storage of all certificates in path and does not store private keys.
+
+For technical articles from Microsoft about managing certificates on Windows Servers, check out: https://technet.microsoft.com/en-us/library/cc772898(WS.10).aspx
