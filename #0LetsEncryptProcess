@@ -7,3 +7,6 @@ Genera PEM que segun la siguiente descripcion es X509 Base64 pareceria ser lo mi
 You may have seen digital certificate files with a variety of filename extensions, such as .crt, .cer, .pem, or .der. 
 These extensions generally map to two major encoding schemes for X.509 certificates and keys: PEM (Base64 ASCII), and DER (binary). 
 However, there is some overlap and other extensions are used, so you can’t always tell what kind of file you are working with just from looking at the filename; you may need to open it in a text editor and take a look for yourself.
+
+En el ubuntu tuve que resetear el sshd cambiando la configuracion a "PasswordAuthentication yes" para que me deje entrar desde Filezilla.
+
