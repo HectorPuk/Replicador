@@ -1,0 +1,7 @@
+Tuve que hacerlo desde un Ubuntu 22.04 en Amazon que ya habia usado anteriormente.
+use estos dos tutoriales para verificar.
+https://www.digitalocean.com/community/tutorials/how-to-secure-apache-with-let-s-encrypt-on-ubuntu-22-04
+https://www.digitalocean.com/community/tutorials/how-to-install-the-apache-web-server-on-ubuntu-22-04#step-5-setting-up-virtual-hosts-recommended
+
+Genera PEM que segun la siguiente descripcion es X509 Base64 pareceria ser lo mismo que .CRT y .CER o .KEY
+You may have seen digital certificate files with a variety of filename extensions, such as .crt, .cer, .pem, or .der. These extensions generally map to two major encoding schemes for X.509 certificates and keys: PEM (Base64 ASCII), and DER (binary). However, there is some overlap and other extensions are used, so you can’t always tell what kind of file you are working with just from looking at the filename; you may need to open it in a text editor and take a look for yourself.
