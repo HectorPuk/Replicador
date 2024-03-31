@@ -1,0 +1,57 @@
+CREATE or replace PROCEDURE SBO_SP_TransactionNotification
+(
+	in object_type nvarchar(30), 				-- SBO Object Type
+	in transaction_type nchar(1),			-- [A]dd, [U]pdate, [D]elete, [C]ancel, C[L]ose
+	in num_of_cols_in_key int,
+	in list_of_key_cols_tab_del nvarchar(255),
+	in list_of_cols_val_tab_del nvarchar(255)
+)
+LANGUAGE SQLSCRIPT
+AS
+-- Return values
+error  int = 0;				-- Result (0 for no error)
+error_message nvarchar (200) = N'ok'; 		-- Error string to be displayed
+begin
+
+Declare CommentNew nvarchar (200);
+Declare CommentOld nvarchar (200);
+Declare DocLogInstance nvarchar (200);
+Declare CountOfInstance nvarchar (200);
+Declare CountDifference nvarchar (200);
+
+If :object_type = '13' Then
+	SELECT OINV."Comments" into CommentNew FROM OINV WHERE OINV."DocEntry" = :list_of_cols_val_tab_del;
+	SELECT TOP 1 ADOC."Comments" into CommentOld FROM ADOC WHERE ADOC."DocEntry" = :list_of_cols_val_tab_del and ADOC."ObjType" = '13' and ADOC."Instance" = 0;
+	
+	SELECT Max(ADOC."LogInstanc") into DocLogInstance FROM ADOC WHERE ADOC."DocEntry" = :list_of_cols_val_tab_del and ADOC."ObjType" = '13';
+	
+	SELECT Count(*) into CountOfInstance FROM OINV join ADOC on OINV."DocEntry" = ADOC."DocEntry" and ADOC."ObjType" = '13' where OINV."DocEntry" = :list_of_cols_val_tab_del;
+
+
+
+	SELECT Count(*) into CountDifference from OINV join ADOC on OINV."DocEntry" = ADOC."DocEntry" and ADOC."ObjType" = '13' 
+	where 
+	1 = 1
+	and OINV."DocEntry" = :list_of_cols_val_tab_del 
+	and ADOC."LogInstanc" = :DocLogInstance
+	and ADOC."Comments" != OINV."Comments";
+	
+	if :CountDifference > 0	then
+		EXEC 'SELECT 1033 from DUMMY' into error;
+		error_message := 'DIVERGENCIA EN CABECERA NO RMITIDA' || :CommentNew || ' --- ' || :CommentOld  || ' --- ' || :DocLogInstance || ' --- ' || :CountOfInstance || ' --- ' || :CountDifference;
+	end if;
+	
+end if;
+
+
+--------------------------------------------------------------------------------------------------------------------------------
+
+--	ADD	YOUR	CODE	HERE
+
+--------------------------------------------------------------------------------------------------------------------------------
+
+-- Select the return values
+select :error, :error_message FROM dummy;
+
+end;
+

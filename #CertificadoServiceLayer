@@ -1,0 +1,20 @@
+openssl genrsa -out cert.key 2048
+openssl req -new -key cert.key -out cert.csr # solo complete country
+openssl x509 -req -days 3650 -in cert.csr -signkey cert.key -out cert.crt
+openssl pkcs12 -export -out cert.pfx -inkey cert.key -in cert.crt # Password 1234
+
+
+Sigo nota https://me.sap.com/notes/3402284
+
+systemctl stop b1s.service
+
+cd  /usr/sap/SAPBusinessOne/ServiceLayer/conf
+ cp server.crt server.crt.bak
+ cp server.key server.key.bak
+ cd  /usr/sap/SAPBusinessOne/ServiceLayer/bin
+ ./servicelayer_update_certificate.sh
+/tmp/ServiceLayer/cert.pfx
+
+systemctl start b1s.service
+
+Verificar Service Layer
