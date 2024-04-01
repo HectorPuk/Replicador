@@ -1,0 +1,108 @@
+begin
+DROP TABLE #TMP;
+create LOCAL TEMPORARY TABLE #TMP as (select "U_XML" from "@Z_XML" where "Code" = '06/07/2023 10:51:18.4770000');
+TEST = SELECT * FROM
+XMLTABLE('/Matrix/Rows/Row' PASSING
+#TMP."U_XML"
+COLUMNS 
+----"Columna1" nvarchar(100) PATH 'Columns/Column[1]/Value',	
+"Fecha de vencimiento" nvarchar(100) PATH 'Columns/Column[2]/Value',	
+"Origen" nvarchar(100) PATH 'Columns/Column[3]/Value',	
+"Referencia" nvarchar(100) PATH 'Columns/Column[4]/Value',	
+"Cuenta Asociada" nvarchar(100) PATH 'Columns/Column[5]/Value',	
+"Cuenta de mayor/Código de socio de negocios" nvarchar(100) PATH 'Columns/Column[6]/Value',	
+"Proyecto" nvarchar(100) PATH 'Columns/Column[7]/Value',	
+---"Acuerdo Global" nvarchar(100) PATH 'Columns/Column[8]/Value',	
+"Comentarios" nvarchar(100) PATH 'Columns/Column[9]/Value',	
+"Débito"  nvarchar(100)  PATH 'Columns/Column[10]/Value',
+"Crédito" nvarchar(100) PATH 'Columns/Column[11]/Value',	
+"Total" nvarchar(100) PATH 'Columns/Column[12]/Value',	
+---"Saldo" nvarchar(100) PATH 'Columns/Column[13]/Value',	
+---"Value14" nvarchar(100) PATH 'Columns/Column[14]/Value',	
+----"Value15" nvarchar(100) PATH 'Columns/Column[15]/Value',	
+----"Value16" nvarchar(100) PATH 'Columns/Column[16]/Value',
+----"Value17" nvarchar(100) PATH 'Columns/Column[17]/Value',	
+"Value18" nvarchar(10) PATH 'Visible'
+) as XTABLE2;
+
+
+select
+TT."Fecha de vencimiento",
+TT."Origen",
+TT."Referencia",
+TT."Cuenta Asociada",
+TT."Cuenta de mayor/Código de socio de negocios" ,'' "CardName",
+TT."Proyecto",
+'' "Comentarios",
+TT. "Débito",
+TT."Crédito",
+TT."Total",
+sum(T1."SumApplied") "Pagado/Cobrado"
+
+from 
+(select 
+---To_Date("Fecha de vencimiento",'dd/mm/yyyy') 
+7 "Fecha de vencimiento", 
+"Origen",
+"Referencia",
+"Cuenta Asociada",
+"Cuenta de mayor/Código de socio de negocios" ,'' "CardName",
+"Proyecto",
+'' "Comentarios",
+sum(To_Decimal(Replace(Replace("Débito",'ARS',''),',',''),20,2)) "Débito",
+sum(To_Decimal(Replace(Replace("Crédito",'ARS',''),',',''),20,2)) "Crédito",
+sum(ifnull(To_Decimal(Replace(Replace("Débito",'ARS',''),',',''),20,2),0)-
+ifnull(To_Decimal(Replace(Replace("Crédito",'ARS',''),',',''),20,2),0))   "Total"
+
+
+
+from :TEST T 
+
+where T."Origen"='CPR' and 
+month(To_Date(T."Fecha de vencimiento",'dd/mm/yyyy'))=7
+
+Group by month(To_Date(T."Fecha de vencimiento",'dd/mm/yyyy')) ,T."Origen",T."Referencia",
+T."Cuenta Asociada",
+T."Cuenta de mayor/Código de socio de negocios" ,T."Proyecto" 
+) TT
+
+
+
+INNER  join OVPM  PR on PR."PrjCode"=TT."Proyecto"
+INNER JOIN VPM2 T1 ON PR."DocEntry" = T1."DocNum" 
+INNER JOIN OPCH T2 ON T1."DocEntry" = T2."DocEntry"
+
+
+
+
+
+
+Group by
+
+TT."Fecha de vencimiento",
+TT."Origen",
+TT."Referencia",
+TT."Cuenta Asociada",
+TT."Cuenta de mayor/Código de socio de negocios" ,
+TT."Proyecto",
+TT. "Débito",
+TT."Crédito",
+TT."Total",
+month(PR."DocDueDate"),
+Month(T2."DocDate")
+
+
+
+Having
+month(PR."DocDueDate")=TT."Fecha de vencimiento"
+and Month(T2."DocDate")=TT."Fecha de vencimiento"
+
+
+
+
+
+
+
+;
+
+end;

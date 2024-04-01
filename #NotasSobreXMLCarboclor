@@ -1,0 +1,21 @@
+-- Esto sirve para insertar el resultado que viene de un XML.
+
+Dim oRecordSet As SAPbobsCOM.Recordset = company.GetBusinessObject(SAPbobsCOM.BoObjectTypes.BoRecordset)
+Dim query as String
+Dim XMLString as String = form.Items.Item("21").Specific.SerializeAsXML(SAPbouiCOM.BoMatrixXmlSelect.mxs_All).Replace("'","''")
+
+'application.StatusBar.SetText(XMLString.Length().toString(), BoMessageTime.bmt_Short, BoStatusBarMessageType.smt_Error)
+
+query = "" & _
+        "do" & Environment.NewLine & _
+        "begin" & Environment.NewLine & _
+        "declare datestring nvarchar(50) = to_nvarchar(CURRENT_TIMESTAMP, 'DD/MM/YYYY HH24:MI:SS.FF7');" & Environment.NewLine & _
+        "insert into ""@Z_XML"" values(:datestring,:datestring,'" & XMLString & "');" & Environment.NewLine & _
+        "end;" & Environment.NewLine
+
+
+
+oRecordSet.DoQuery(query)
+
+application.StatusBar.SetText("Foto Finalizada", BoMessageTime.bmt_Short, BoStatusBarMessageType.smt_Success)
+
