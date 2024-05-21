@@ -1,0 +1,8 @@
+2024-05-19 19:47:23.135 hdbbackupdiag called with --check -f -v -d /usr/sap/NDB/HDB00/backup/log/SYSTEMDB/
+2024-05-19 19:47:23.135 hdbbackupdiag trace will be written to ., prefix 
+2024-05-19 19:47:23.151 found backup catalog 1716158110639 from file /usr/sap/NDB/HDB00/backup/log/SYSTEMDB/log_backup_0_0_0_0.1716158110639
+2024-05-19 19:47:23.151 using backup catalog 1716158110639 from file /usr/sap/NDB/HDB00/backup/log/SYSTEMDB/log_backup_0_0_0_0.1716158110639
+2024-05-19 19:47:23.162 Backup '/backup/SYSTEMDB/COMPLETESYSTEMDB20240519193002_databackup_0_1' successfully checked.
+2024-05-19 19:47:23.162 Backup '/backup/SYSTEMDB/COMPLETESYSTEMDB20240519193002_databackup_1_1' successfully checked.
+2024-05-19 19:47:23.165 Backup '/backup/SYSTEMDB/log/SYSTEMDB/log_backup_1_0_2928068928_2928087424.1716158110622' successfully checked.
+2024-05-19 19:47:23.165 hdbbackupdiag exits with 0
