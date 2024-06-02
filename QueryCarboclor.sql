@@ -1,30 +1,52 @@
+set schema SBODEMOAR;
 do
 begin
 
-Q1 = select 
-"Account", 
-"ProfitCode", 
-case when OCR1."PrcCode" = '0001' then 'KP1' else null end "KP1", 
-case when OCR1."PrcCode" = '0002' then 'KP2' else null end "KP2", 
-case when OCR1."PrcCode" = '0003' then 'KP3' else null end "KP3", 
-OCR1."PrcCode",
-OPRC."PrcName",
-"Credit",
-"Debit"
+TABLACUENTA = 
+select 1 "Orden", '4.4.010.10.102' "Account" from dummy
+union all 
+select 1, '4.4.010.10.103' from dummy
+union all 
+select 2, '4.4.010.10.104' from dummy;
+
+TABLATITULO =
+select 1 "Orden", 'Subtotal #1' "Titulo" from dummy
+union all
+select 2 , 'Subtotal #2' from dummy;
+
+select * from :TABLACUENTA;
+select * from :TABLATITULO;
+
+CUENTAYTITULO = SELECT :TABLACUENTA."Orden", :TABLACUENTA."Account",:TABLATITULO."Titulo" from :TABLACUENTA join :TABLATITULO on :TABLACUENTA."Orden" = :TABLATITULO."Orden";
+
+select * from :CUENTAYTITULO;
+
+Q9 = select 
+"Account",
+"AcctName",
+case when OCR1."PrcCode" = 'PDR1' then SUM("Credit"-"Debit") else 0 end "PDR1", 
+case when OCR1."PrcCode" = 'GOP' then SUM("Credit"-"Debit") else 0 end "GOP", 
+case when OCR1."PrcCode" = 'GAD' then SUM("Credit"-"Debit") else 0 end "GAD"
 from 
 JDT1 join OOCR on JDT1."ProfitCode" = OOCR."OcrCode" 
 	join OCR1 on OCR1."OcrCode" = OOCR."OcrCode"
 	join OPRC on OPRC."PrcCode" = OCR1."PrcCode"
-	where "Account" = '4.4.010.10.013';
+	join OACT on OACT."AcctCode" = JDT1."Account"
+	
+--	where "Account" in ('4.4.010.10.102','4.4.010.10.103', '4.4.010.10.104') 
+	where "Account" in (select "Account" from :CUENTAYTITULO) 
+	Group by "Account", "AcctName", OCR1."PrcCode"
+	order by "Account";
+select "Account", "AcctName", SUM("PDR1") "Gastos De Produccion", SUM("GOP") "Gastos de Operaciones", SUM("GAD") "Gastos Administracion", SUM("PDR1")+SUM("GOP")+SUM("GAD") "Total por Cuenta" 
+from :Q9 where "Account" in(select "Account" from :CUENTAYTITULO where "Orden" = 1) group by "Account", "AcctName" 
+union all 
+select top 1 (select top 1 "Titulo" from :CUENTAYTITULO where "Orden" = 1), '', SUM("PDR1") , SUM("GOP") , SUM("GAD") , SUM("PDR1")+SUM("GOP")+SUM("GAD") from :Q9 where "Account" in(select "Account" from :CUENTAYTITULO where "Orden" = 1)
+union all
+select "Account", "AcctName", SUM("PDR1") "Gastos De Produccion", SUM("GOP") "Gastos de Operaciones", SUM("GAD") "Gastos Administracion", SUM("PDR1")+SUM("GOP")+SUM("GAD") "Total por Cuenta" 
+from :Q9 where "Account" in(select "Account" from :CUENTAYTITULO where "Orden" = 2) group by "Account", "AcctName" 
+union all 
+select top 1 (select top 1 "Titulo" from :CUENTAYTITULO where "Orden" = 2), '', SUM("PDR1") , SUM("GOP") , SUM("GAD") , SUM("PDR1")+SUM("GOP")+SUM("GAD") from :Q9 where "Account" in(select "Account" from :CUENTAYTITULO where "Orden" = 1);	
 
-Q2 = select
-(select top 1 "Account" from :Q1) "Account",
-(Select sum("Credit" - "Debit") from :Q1 where "PrcCode" = ('0001')) "D1",
-(Select sum("Credit" - "Debit") from :Q1 where "PrcCode" = ('0002')) "D2",
-(Select sum("Credit" - "Debit") from :Q1 where "PrcCode" = ('0003')) "D3"
-from dummy;
-
-select "Account", "D1","D2","D3","D1"+"D2"+"D3" "SUMA" from :Q2;
-
-select "Postable", * from OACT;
+	
+	
 end;
