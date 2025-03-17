@@ -59,6 +59,16 @@ GRANT
 GRANT CREATE ANY, SELECT ON SCHEMA SYSTEM TO SBO;
 GRANT SELECT, EXECUTE, DELETE ON SCHEMA _SYS_REPO TO SBO; -- With Grant Option? Ojo que me fallo cuando queria instalar las vistas analiticas.... Marzo 2025
 
+/* Asi tuve que darle el GRANT en la maquina de IVANA KRIMAX para lograr que corriera la vista analitica 
+
+GRANT SELECT, EXECUTE, DELETE ON SCHEMA _SYS_BIC TO B1_53424F44454D4F4152_RW with grant option;
+
+/* 
+
+En est tabla inserte una vista para que pueda ser accesible desde Service Layer
+Es un gran dedazo sobre Semantic Views.
+
+update "SBODEMOAR"."HMM1" set "SLExpose" = 'Y' where "LineNum" = 256
 
 /*
 BACKUPS DEL ORTO
