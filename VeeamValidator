@@ -1,0 +1,14 @@
+./Veeam.Backup.Validator /file:"d:\Backup HA01D2024-12-04T204232_39D9.vbk"
+./Veeam.Backup.Validator /file:"d:\Backup HA01D2024-12-04T204232_39D9.vbk"
+./Veeam.Backup.Validator /file:"f:\ILG-SUSE-01.vm-102118D2025-02-06T212915_EF6E.vbk"
+
+ILG-SUSE-01.vm-102118D2025-02-06T212915_EF6E.vbk
+
+	quirografario
+	quirografario
+	
+	D:\AppServer.1D2024-11-12T102102_6099.vbk
+	
+./Veeam.Backup.Validator /file:"E:\VS2019\test\HANAD2025-05-21T003131_5D94.vbk"
+
+cd "C:\Program Files\Veeam\Backup and Replication\Backup"
